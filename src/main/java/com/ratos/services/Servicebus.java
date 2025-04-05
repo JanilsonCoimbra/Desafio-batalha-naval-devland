@@ -10,11 +10,22 @@ import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ratos.interfaces.EventsEnum;
+import com.ratos.interfaces.IComunication;
+import com.ratos.interfaces.IHandleChain;
+import com.ratos.models.Message;
+import com.ratos.services.handlers.HandleCripto;
+import com.ratos.services.handlers.HandleIngressoCampo;
+import com.ratos.validations.JsonValidate;
 public class Servicebus {
 	
-	static String connectionString = "Endpoint=sb://servdevland.servicebus.windows.net/;SharedAccessKeyName=casaratolandia;SharedAccessKey=MUt2vhyqM/TwWxhad+DzI2L1wjyifG3wP+ASbPh+dYc=";
-	static String topicName = "desafio.batalha_naval.casaratolandia";
+	static String connectionString = 
+	// "Endpoint=sb://servdevland.servicebus.windows.net/;SharedAccessKeyName=controlador;SharedAccessKey=bAIXURMyd9CW5V3cXJ7Ou3W6RDsWP1ZhE+ASbFQFVE0=;EntityPath=batalha_naval.entrada.topic";
+	"Endpoint=sb://servdevland.servicebus.windows.net/;SharedAccessKeyName=casaratolandia;SharedAccessKey=MUt2vhyqM/TwWxhad+DzI2L1wjyifG3wP+ASbPh+dYc=";
+	static String topicName = 
+	// "batalha_naval.entrada.topic";
+	"desafio.batalha_naval.casaratolandia";
 	static String subscriptionName = "rato_do_mar";
 	
 	public static void sendMessage(ServiceBusMessage message)
@@ -31,7 +42,9 @@ public class Servicebus {
 	
 	public ServiceBusMessage createMessages()
 	{
-	    ServiceBusMessage messages = new ServiceBusMessage("First message");
+		IComunication message = new Message();
+		// message.setEvent(EventsEnum.LiberacaoAtaque);
+	    ServiceBusMessage messages = new ServiceBusMessage(message.toString());
 	    return messages;
 	}
 	
@@ -45,16 +58,40 @@ public class Servicebus {
 			.processMessage(Servicebus::processMessage)
 	        .processError(context -> processError(context))
 	        .buildProcessorClient();
-
-	    System.out.println("Starting the processor");
 	    processorClient.start();
 	}
 	
 	
 	private static void processMessage(ServiceBusReceivedMessageContext context) {
 	    ServiceBusReceivedMessage message = context.getMessage();
-	    System.out.printf("Processing message. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
-	        message.getSequenceNumber(), message.getBody());
+		System.out.println("------------------------------------------------------------");
+	    System.out.printf("Message: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
+	        message.getSequenceNumber(), message.getBody());	
+		System.out.println("------------------------------------------------------------");
+	
+			
+		    try {
+
+				
+
+				if (!JsonValidate.isValidJson(message.getBody().toString())) {
+					System.err.println("JSON inválido: " + message.getBody().toString());
+					return;
+				}
+
+
+				ObjectMapper objectMapper = new ObjectMapper();
+				Message messageReceived = null;
+		        messageReceived = objectMapper.readValue(message.getBody().toString(), Message.class);
+
+				IHandleChain handler = new HandleCripto();
+				handler.next(new HandleIngressoCampo());
+				handler.validate(messageReceived);
+
+		    } catch (Exception e) {
+		        System.out.println("Error converting message to MessageReceived: " + e.getMessage());
+		    }	
+			
 	}
 	
 	private static void processError(ServiceBusErrorContext context) {
