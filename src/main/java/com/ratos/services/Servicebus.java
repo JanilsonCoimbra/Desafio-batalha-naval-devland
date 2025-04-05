@@ -15,6 +15,7 @@ import com.ratos.interfaces.EventsEnum;
 import com.ratos.interfaces.IComunication;
 import com.ratos.interfaces.IHandleChain;
 import com.ratos.models.Message;
+import com.ratos.services.handlers.AtackEnemy;
 import com.ratos.services.handlers.HandleCripto;
 import com.ratos.services.handlers.HandleIngressoCampo;
 import com.ratos.validations.JsonValidate;
@@ -71,21 +72,18 @@ public class Servicebus {
 	
 			
 		    try {
-
-				
-
 				if (!JsonValidate.isValidJson(message.getBody().toString())) {
 					System.err.println("JSON inválido: " + message.getBody().toString());
 					return;
 				}
-
 
 				ObjectMapper objectMapper = new ObjectMapper();
 				Message messageReceived = null;
 		        messageReceived = objectMapper.readValue(message.getBody().toString(), Message.class);
 
 				IHandleChain handler = new HandleCripto();
-				handler.next(new HandleIngressoCampo());
+				handler.next(new HandleIngressoCampo())
+						.next(new AtackEnemy());
 				handler.validate(messageReceived);
 
 		    } catch (Exception e) {

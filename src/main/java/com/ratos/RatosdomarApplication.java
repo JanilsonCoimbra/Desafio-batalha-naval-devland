@@ -13,6 +13,8 @@ public class RatosdomarApplication {
 
 	public static void main(String[] args) throws InterruptedException {
 		SpringApplication.run(RatosdomarApplication.class, args);
+
+		
 		Servicebus service = new Servicebus();
 		service.receiveMessages();
 
