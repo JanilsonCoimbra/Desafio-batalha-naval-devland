@@ -1,12 +1,9 @@
 package com.ratos;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.ratos.models.Message;
-import com.ratos.models.ShipState;
-import com.ratos.services.Servicebus;
+import com.ratos.services.ServiceBus;
 
 @SpringBootApplication
 public class RatosdomarApplication {
@@ -15,7 +12,7 @@ public class RatosdomarApplication {
 		SpringApplication.run(RatosdomarApplication.class, args);
 
 		
-		Servicebus service = new Servicebus();
+		ServiceBus service = new ServiceBus();
 		service.receiveMessages();
 
 	}

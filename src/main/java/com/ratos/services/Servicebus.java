@@ -12,15 +12,13 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ratos.configs.Configs;
-import com.ratos.interfaces.EventsEnum;
-import com.ratos.interfaces.IComunication;
 import com.ratos.interfaces.IHandleChain;
 import com.ratos.models.Message;
 import com.ratos.services.handlers.HandleAtackEnemy;
 import com.ratos.services.handlers.HandleCripto;
 import com.ratos.services.handlers.HandleEntryCampo;
 import com.ratos.validations.JsonValidate;
-public class Servicebus {
+public class ServiceBus {
 	
 	static String connectionString = Configs.CONNECTION_STRING;
 	static String topicName = Configs.TOPIC_NAME;
@@ -45,7 +43,7 @@ public class Servicebus {
 	        .processor()
 	        .topicName(topicName)
 	        .subscriptionName(subscriptionName)
-			.processMessage(Servicebus::processMessage)
+			.processMessage(ServiceBus::processMessage)
 	        .processError(context -> processError(context))
 	        .buildProcessorClient();
 	    processorClient.start();

@@ -3,9 +3,9 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.ratos.interfaces.EventsEnum;
 import com.ratos.interfaces.IComunication;
 import com.ratos.interfaces.IHandleChain;
-import com.ratos.models.DiretorMessage;
+import com.ratos.models.DirectorMessage;
 import com.ratos.models.Message;
-import com.ratos.services.Servicebus;
+import com.ratos.services.ServiceBus;
 
 public class HandleEntryCampo implements IHandleChain {
     
@@ -26,11 +26,11 @@ public class HandleEntryCampo implements IHandleChain {
                     System.out.println("Campo de batalha encontrado:  "+ request.getCorrelationId());
                     System.out.println("------------------------------------------------------------");
 
-                    Message messageBuilder  = DiretorMessage.createMessageSubscription( request.getCorrelationId());
+                    Message message  = DirectorMessage.createMessageSubscription( request.getCorrelationId());
                     
-                    ServiceBusMessage messageService = new ServiceBusMessage(messageBuilder.toString());
+                    ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
 
-                    Servicebus service = new Servicebus();
+                    ServiceBus service = new ServiceBus();
                     service.sendMessage(messageService);
 
                     return request;

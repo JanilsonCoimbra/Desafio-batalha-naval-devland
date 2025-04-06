@@ -3,7 +3,10 @@ package com.ratos.models;
 import com.ratos.configs.Configs;
 import com.ratos.interfaces.EventsEnum;
 
-public class DiretorMessage {
+public class DirectorMessage {
+
+    private DirectorMessage() {
+    }
     
     public static Message createMessageSubscription(String correlationId) {
         BuilderMessage builderMessage = new BuilderMessage();
