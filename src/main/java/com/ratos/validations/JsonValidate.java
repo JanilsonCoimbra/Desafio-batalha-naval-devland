@@ -4,13 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonValidate {
 
-    public static boolean isValidJson(String json) {
+    public static void isValidJson(String json) throws Exception {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.readTree(json); // Tenta parsear o JSON
-            return true;
+            objectMapper.readTree(json);
         } catch (Exception e) {
-            return false;
+            throw new Exception("Invalid JSON format: " + e.getMessage(), e);
         }
     }
 }

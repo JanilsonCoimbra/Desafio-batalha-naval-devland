@@ -4,7 +4,7 @@ import com.ratos.interfaces.EventsEnum;
 import com.ratos.interfaces.IComunication;
 import com.ratos.interfaces.IHandleChain;
 
-public class AtackEnemy implements IHandleChain {
+public class HandleAtackEnemy implements IHandleChain {
     private IHandleChain nextHandler;
     
         @Override
