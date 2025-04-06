@@ -5,5 +5,11 @@ public class Configs {
     public static final String TOPIC_NAME = "desafio.batalha_naval.casaratolandia";
     public static final String SUBSCRIPTION_NAME = "rato_do_mar";
 
+    public static final String POSITION_Y = "20";
+    public static final String POSITION_X = "20";
+    public static final String ORIENTATION = "vertical";
+    
+
+
     private Configs() {}
 }

@@ -26,7 +26,7 @@ public class Servicebus {
 	static String topicName = Configs.TOPIC_NAME;
 	static String subscriptionName = Configs.SUBSCRIPTION_NAME;
 	
-	public static void sendMessage(ServiceBusMessage message)
+	public void sendMessage(ServiceBusMessage message)
 	{
 	    ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
 	            .connectionString(connectionString)
