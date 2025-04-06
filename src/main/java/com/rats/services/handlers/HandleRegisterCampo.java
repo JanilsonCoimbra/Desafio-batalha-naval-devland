@@ -36,6 +36,20 @@ public class HandleRegisterCampo implements IHandleChain {
                     return request;
                 }
 
+                if(request.getEvento() == EventsEnum.RegistrarNovamente) {
+                    System.out.println("------------------------------------------------------------");
+                    System.out.println("Novo registro no Campo:  "+ request.getCorrelationId());
+                    System.out.println("------------------------------------------------------------");
+
+                    Message message  = DirectorMessage.createRegisterMessage( request.getCorrelationId());
+                    
+                    ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
+
+                    ServiceBus service = new ServiceBus();
+                    service.sendMessage(messageService);
+
+                }
+
                 if (nextHandler != null) {
                     return nextHandler.validate(request);
                 }
