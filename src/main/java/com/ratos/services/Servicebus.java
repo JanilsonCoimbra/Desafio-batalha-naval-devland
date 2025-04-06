@@ -14,8 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ratos.configs.Configs;
 import com.ratos.interfaces.IHandleChain;
 import com.ratos.models.Message;
-import com.ratos.services.handlers.HandleAtackEnemy;
-import com.ratos.services.handlers.HandleCripto;
+import com.ratos.services.handlers.HandleAttackEnemy;
+import com.ratos.services.handlers.HandleCryptography;
 import com.ratos.services.handlers.HandleEntryCampo;
 import com.ratos.validations.JsonValidate;
 public class ServiceBus {
@@ -64,9 +64,9 @@ public class ServiceBus {
 				Message messageReceived;
 		        messageReceived = objectMapper.readValue(message.getBody().toString(), Message.class);
 
-				IHandleChain handler = new HandleCripto();
+				IHandleChain handler = new HandleCryptography();
 				handler.next(new HandleEntryCampo())
-						.next(new HandleAtackEnemy());
+						.next(new HandleAttackEnemy());
 				handler.validate(messageReceived);
 
 		    } catch (Exception e) {

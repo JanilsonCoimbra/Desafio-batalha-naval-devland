@@ -4,7 +4,7 @@ import com.ratos.interfaces.EventsEnum;
 import com.ratos.interfaces.IComunication;
 import com.ratos.interfaces.IHandleChain;
 
-public class HandleCripto implements IHandleChain {
+public class HandleCryptography implements IHandleChain {
     
         private IHandleChain nextHandler;
     
