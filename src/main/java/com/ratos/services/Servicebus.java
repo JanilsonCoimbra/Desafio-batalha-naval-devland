@@ -16,7 +16,7 @@ import com.ratos.interfaces.IHandleChain;
 import com.ratos.models.Message;
 import com.ratos.services.handlers.HandleAttackEnemy;
 import com.ratos.services.handlers.HandleCryptography;
-import com.ratos.services.handlers.HandleEntryCampo;
+import com.ratos.services.handlers.HandleRegisterCampo;
 import com.ratos.validations.JsonValidate;
 public class ServiceBus {
 	
@@ -49,7 +49,6 @@ public class ServiceBus {
 	    processorClient.start();
 	}
 	
-	
 	private static void processMessage(ServiceBusReceivedMessageContext context) {
 	    ServiceBusReceivedMessage message = context.getMessage();
 		System.out.println("------------------------------------------------------------");
@@ -65,7 +64,7 @@ public class ServiceBus {
 		        messageReceived = objectMapper.readValue(message.getBody().toString(), Message.class);
 
 				IHandleChain handler = new HandleCryptography();
-				handler.next(new HandleEntryCampo())
+				handler.next(new HandleRegisterCampo())
 						.next(new HandleAttackEnemy());
 				handler.validate(messageReceived);
 

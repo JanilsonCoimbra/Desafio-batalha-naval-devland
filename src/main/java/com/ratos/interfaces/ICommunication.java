@@ -2,7 +2,7 @@ package com.ratos.interfaces;
 
 import java.util.Map;
 
-public interface IComunication {
+public interface ICommunication {
     String getCorrelationId();
     void setCorrelationId(String correlationId);
 

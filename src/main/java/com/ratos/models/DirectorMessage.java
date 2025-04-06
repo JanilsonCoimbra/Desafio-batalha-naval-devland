@@ -8,7 +8,7 @@ public class DirectorMessage {
     private DirectorMessage() {
     }
     
-    public static Message createMessageSubscription(String correlationId) {
+    public static Message createRegisterMessage(String correlationId) {
         BuilderMessage builderMessage = new BuilderMessage();
         return builderMessage 
                 .setCorrelationId(correlationId)

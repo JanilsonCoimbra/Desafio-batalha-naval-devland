@@ -1,11 +1,10 @@
 package com.ratos.models;
-
 import com.ratos.interfaces.EventsEnum;
-import com.ratos.interfaces.IComunication;
+import com.ratos.interfaces.ICommunication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
 
-public class Message implements IComunication {
+public class Message implements ICommunication {
     private String correlationId;
     private String origem;
     private String navioDestino;

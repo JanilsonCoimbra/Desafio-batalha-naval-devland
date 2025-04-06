@@ -1,13 +1,13 @@
 package com.ratos.services.handlers;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.ratos.interfaces.EventsEnum;
-import com.ratos.interfaces.IComunication;
+import com.ratos.interfaces.ICommunication;
 import com.ratos.interfaces.IHandleChain;
 import com.ratos.models.DirectorMessage;
 import com.ratos.models.Message;
 import com.ratos.services.ServiceBus;
 
-public class HandleEntryCampo implements IHandleChain {
+public class HandleRegisterCampo implements IHandleChain {
     
         private IHandleChain nextHandler;
     
@@ -18,7 +18,7 @@ public class HandleEntryCampo implements IHandleChain {
         }
     
         @Override
-        public IComunication validate(IComunication request) {
+        public ICommunication validate(ICommunication request) {
 
 
                 if (request.getEvento() == EventsEnum.CampoLiberadoParaRegistro) {
@@ -26,7 +26,7 @@ public class HandleEntryCampo implements IHandleChain {
                     System.out.println("Campo de batalha encontrado:  "+ request.getCorrelationId());
                     System.out.println("------------------------------------------------------------");
 
-                    Message message  = DirectorMessage.createMessageSubscription( request.getCorrelationId());
+                    Message message  = DirectorMessage.createRegisterMessage( request.getCorrelationId());
                     
                     ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
 

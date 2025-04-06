@@ -1,7 +1,5 @@
 package com.ratos.services.handlers;
-
-import com.ratos.interfaces.EventsEnum;
-import com.ratos.interfaces.IComunication;
+import com.ratos.interfaces.ICommunication;
 import com.ratos.interfaces.IHandleChain;
 
 public class HandleCryptography implements IHandleChain {
@@ -15,11 +13,10 @@ public class HandleCryptography implements IHandleChain {
         }
     
         @Override
-        public IComunication validate(IComunication request) {
+        public ICommunication validate(ICommunication request) {
                 System.out.println("------------------------------------------------------------");
-                System.out.println("Cripto: Processing message.");
+                System.out.println("Cryptography: Processing message.");
                 System.out.println("------------------------------------------------------------");
-
 
                 if (nextHandler != null) {
                     return nextHandler.validate(request);
