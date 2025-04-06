@@ -1,8 +1,8 @@
-package com.ratos.models;
+package com.rats.models;
 
 import java.util.Map;
 
-import com.ratos.interfaces.EventsEnum;
+import com.rats.interfaces.EventsEnum;
 
 public class BuilderMessage {
     

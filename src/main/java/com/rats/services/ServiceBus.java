@@ -1,4 +1,4 @@
-package com.ratos.services;
+package com.rats.services;
 
 import java.util.concurrent.TimeUnit;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
@@ -11,13 +11,13 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ratos.configs.Configs;
-import com.ratos.interfaces.IHandleChain;
-import com.ratos.models.Message;
-import com.ratos.services.handlers.HandleAttackEnemy;
-import com.ratos.services.handlers.HandleCryptography;
-import com.ratos.services.handlers.HandleRegisterCampo;
-import com.ratos.validations.JsonValidate;
+import com.rats.configs.Configs;
+import com.rats.interfaces.IHandleChain;
+import com.rats.models.Message;
+import com.rats.services.handlers.HandleAttackEnemy;
+import com.rats.services.handlers.HandleCryptography;
+import com.rats.services.handlers.HandleRegisterCampo;
+import com.rats.validations.JsonValidate;
 public class ServiceBus {
 	
 	static String connectionString = Configs.CONNECTION_STRING;

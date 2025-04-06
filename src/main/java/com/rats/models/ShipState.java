@@ -1,4 +1,4 @@
-package com.ratos.models;
+package com.rats.models;
 
 public class ShipState {
     private static ShipState instance;

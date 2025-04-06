@@ -1,4 +1,4 @@
-package com.ratos.interfaces;
+package com.rats.interfaces;
 
 public interface IHandleChain {
     IHandleChain next(IHandleChain nextHandler);

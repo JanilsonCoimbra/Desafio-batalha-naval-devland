@@ -1,6 +1,6 @@
-package com.ratos.services.handlers;
-import com.ratos.interfaces.ICommunication;
-import com.ratos.interfaces.IHandleChain;
+package com.rats.services.handlers;
+import com.rats.interfaces.ICommunication;
+import com.rats.interfaces.IHandleChain;
 
 public class HandleCryptography implements IHandleChain {
     

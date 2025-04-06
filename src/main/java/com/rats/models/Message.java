@@ -1,6 +1,6 @@
-package com.ratos.models;
-import com.ratos.interfaces.EventsEnum;
-import com.ratos.interfaces.ICommunication;
+package com.rats.models;
+import com.rats.interfaces.EventsEnum;
+import com.rats.interfaces.ICommunication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
 

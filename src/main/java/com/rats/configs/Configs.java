@@ -1,4 +1,4 @@
-package com.ratos.configs;
+package com.rats.configs;
 
 public class Configs {
     public static final String CONNECTION_STRING = "Endpoint=sb://servdevland.servicebus.windows.net/;SharedAccessKeyName=casaratolandia;SharedAccessKey=MUt2vhyqM/TwWxhad+DzI2L1wjyifG3wP+ASbPh+dYc=";

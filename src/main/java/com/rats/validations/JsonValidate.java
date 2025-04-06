@@ -1,4 +1,4 @@
-package com.ratos.validations;
+package com.rats.validations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

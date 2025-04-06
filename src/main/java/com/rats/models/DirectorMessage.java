@@ -1,7 +1,7 @@
-package com.ratos.models;
+package com.rats.models;
 
-import com.ratos.configs.Configs;
-import com.ratos.interfaces.EventsEnum;
+import com.rats.configs.Configs;
+import com.rats.interfaces.EventsEnum;
 
 public class DirectorMessage {
 

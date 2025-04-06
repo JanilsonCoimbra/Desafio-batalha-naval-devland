@@ -1,4 +1,4 @@
-package com.ratos.validations;
+package com.rats.validations;
 
 import java.util.HashSet;
 import java.util.Set;

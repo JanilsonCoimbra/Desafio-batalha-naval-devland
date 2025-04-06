@@ -1,11 +1,11 @@
-package com.ratos.services.handlers;
+package com.rats.services.handlers;
 import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.ratos.interfaces.EventsEnum;
-import com.ratos.interfaces.ICommunication;
-import com.ratos.interfaces.IHandleChain;
-import com.ratos.models.DirectorMessage;
-import com.ratos.models.Message;
-import com.ratos.services.ServiceBus;
+import com.rats.interfaces.EventsEnum;
+import com.rats.interfaces.ICommunication;
+import com.rats.interfaces.IHandleChain;
+import com.rats.models.DirectorMessage;
+import com.rats.models.Message;
+import com.rats.services.ServiceBus;
 
 public class HandleRegisterCampo implements IHandleChain {
     

@@ -1,15 +1,14 @@
-package com.ratos;
-
+package com.rats;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.ratos.services.ServiceBus;
+import com.rats.services.ServiceBus;
 
 @SpringBootApplication
-public class RatosdomarApplication {
+public class RatosDoMarApplication {
 
 	public static void main(String[] args) throws InterruptedException {
-		SpringApplication.run(RatosdomarApplication.class, args);
+		SpringApplication.run(RatosDoMarApplication.class, args);
 
 		
 		ServiceBus service = new ServiceBus();
