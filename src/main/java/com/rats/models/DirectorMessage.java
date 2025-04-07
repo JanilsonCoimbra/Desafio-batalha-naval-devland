@@ -17,4 +17,17 @@ public class DirectorMessage {
                 .setConteudo("{\"nomeNavio\":\""+Configs.SUBSCRIPTION_NAME+"\",\"posicaoCentral\":{\"x\":"+Configs.POSITION_X+",\"y\":"+Configs.POSITION_Y+"},\"orientacao\":\""+Configs.ORIENTATION+"\"}")
                 .build();
     }
+
+
+    public static Message createAttackMessage(String correlationId, byte positionX, byte positionY) {
+        BuilderMessage builderMessage = new BuilderMessage();
+        return builderMessage 
+                .setCorrelationId(correlationId)
+                .setOrigem(Configs.SUBSCRIPTION_NAME)
+                .setEvento(EventsEnum.Ataque)
+                .setConteudo("{\"nomeNavio\":\""+Configs.SUBSCRIPTION_NAME+"\",\"posicaoAtaque\":{\"x\":"+positionX+",\"y\":"+positionY+"}}")
+                .build();
+    }
 }
+
+
