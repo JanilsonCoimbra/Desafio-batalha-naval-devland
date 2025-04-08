@@ -8,7 +8,7 @@ public class Message implements ICommunication {
     private String correlationId;
     private String origem;
     private String navioDestino;
-    private Map<String, Integer> pontuacaoNavios; // Alterado para Map<String, Integer>
+    private Map<String, Integer> pontuacaoNavios;
     private EventsEnum evento;
     private String conteudo;
 

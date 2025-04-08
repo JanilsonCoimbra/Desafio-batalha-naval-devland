@@ -12,9 +12,8 @@ public class Configs {
     public static final String POSITION_Y = "20";
     public static final String POSITION_X = "20";
     public static final String ORIENTATION = "vertical";
-     
-    public static Integer SHOOT_LEVEL = 0;
-    public static List<List<Integer>> FIRST_SET_SHOOT = new ArrayList<>();
+    
+    public static final List<List<Integer>> FIRST_SET_SHOOT = new ArrayList<>();
     static {
         FIRST_SET_SHOOT.add(Arrays.asList(93, 23));
         FIRST_SET_SHOOT.add(Arrays.asList(82, 23));
@@ -45,8 +44,6 @@ public class Configs {
         FIRST_SET_SHOOT.add(Arrays.asList(5, 1));
     }
 
-    public static String DISTANCE_APPROXIMATE = "1000.0";
-    public static List<List<Long[]>> SECOND_SET_SHOOT = new ArrayList<>();
 
     private Configs() {}
 }

@@ -1,4 +1,5 @@
 package com.rats.services.handlers;
+import com.rats.configs.HandleLog;
 import com.rats.interfaces.ICommunication;
 import com.rats.interfaces.IHandleChain;
 
@@ -14,8 +15,7 @@ public class HandleCryptography implements IHandleChain {
     
         @Override
         public ICommunication validate(ICommunication request) {
-                System.out.println("Cryptography: Processing message.");
-                System.out.println("------------------------------------------------------------");
+                HandleLog.title("Validando criptografia");  
 
                 if (nextHandler != null) {
                     return nextHandler.validate(request);

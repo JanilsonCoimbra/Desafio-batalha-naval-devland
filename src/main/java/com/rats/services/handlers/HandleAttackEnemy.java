@@ -5,17 +5,20 @@ import java.util.List;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.rats.configs.Configs;
+import com.rats.configs.HandleLog;
 import com.rats.interfaces.EventsEnum;
 import com.rats.interfaces.ICommunication;
 import com.rats.interfaces.IHandleChain;
 import com.rats.models.DirectorMessage;
 import com.rats.models.Message;
+import com.rats.models.ShipModel;
 import com.rats.services.ServiceBus;
 
 public class HandleAttackEnemy implements IHandleChain {
 
 
     private IHandleChain nextHandler;
+    ShipModel shipModel = ShipModel.getShipModel();
     
         @Override
         public IHandleChain next(IHandleChain nextHandler) {
@@ -26,11 +29,10 @@ public class HandleAttackEnemy implements IHandleChain {
         @Override
         public ICommunication validate(ICommunication request) {
 
+
             if (request.getEvento() == EventsEnum.LiberacaoAtaque && request.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
-                
-                System.out.println("Atack: Processing message.");
-                System.out.println("------------------------------------------------------------");  
-                
+                HandleLog.title("Atack: Processing message");  
+
                 String correlationId = request.getCorrelationId();
                 String message = shoot(correlationId);
                 ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
@@ -53,9 +55,9 @@ public class HandleAttackEnemy implements IHandleChain {
         private String shoot(String correlationId) {
             List<Integer> x_y_try = Arrays.asList(1, 1);
 
-            if (Configs.SHOOT_LEVEL == 0) {
+            if (shipModel.getShootLevel() == 0) {
                 x_y_try = firstLevelShoot();
-            } else if (Configs.SHOOT_LEVEL == 1) {
+            } else if (shipModel.getShootLevel() == 1) {
                 x_y_try = secondLevelShoot();
             }
 
@@ -76,59 +78,59 @@ public class HandleAttackEnemy implements IHandleChain {
         private List<Integer> secondLevelShoot() {
             //List<List<Long[]>> SECOND_SET_SHOOT
 
-            int xAtack = Configs.SECOND_SET_SHOOT.get(0).get(0)[0].intValue();
-            int yAtack = Configs.SECOND_SET_SHOOT. get(0).get(0)[1].intValue();
-            Configs.SECOND_SET_SHOOT.remove(0);
+            int xAtack = shipModel.secondSetShoot.get(0).get(0)[0].intValue();
+            int yAtack = shipModel.secondSetShoot. get(0).get(0)[1].intValue();
+            shipModel.getSecondSetShoot().remove(0);
             return Arrays.asList(xAtack, yAtack);
         }
 
         private List<List<Integer>> setSecondLevelShoot() {
-            if (Configs.DISTANCE_APPROXIMATE == "1000.0") {
-                Configs.SHOOT_LEVEL = 0;
+            if (shipModel.getDistanceApproximate() == "1000.0") {
+                shipModel.setShootLevel(0);
                 return Arrays.asList(Arrays.asList(0, 0));
             } else if (isPerpendicularCase()) {
-                Configs.SHOOT_LEVEL = 1;
+                shipModel.setShootLevel(1);
                 return Arrays.asList(Arrays.asList(0, 0));
-            } else if (Configs.DISTANCE_APPROXIMATE == "1000.0") {
-                Configs.SHOOT_LEVEL = 2;
+            } else if (shipModel.getDistanceApproximate() == "1000.0") {
+                shipModel.setShootLevel(2);
                 return Arrays.asList(Arrays.asList(0, 0));
             }
             return null;
         }
 
         private boolean isPerpendicularCase() {
-            if (Configs.DISTANCE_APPROXIMATE == "1" || 
-            Configs.DISTANCE_APPROXIMATE == "2" || 
-            Configs.DISTANCE_APPROXIMATE == "3" || 
-            Configs.DISTANCE_APPROXIMATE == "4" || 
-            Configs.DISTANCE_APPROXIMATE == "5" || 
-            Configs.DISTANCE_APPROXIMATE == "6" || 
-            Configs.DISTANCE_APPROXIMATE == "7") {
+            if (shipModel.getDistanceApproximate() == "1" || 
+            shipModel.getDistanceApproximate() == "2" || 
+            shipModel.getDistanceApproximate() == "3" || 
+            shipModel.getDistanceApproximate() == "4" || 
+            shipModel.getDistanceApproximate() == "5" || 
+            shipModel.getDistanceApproximate() == "6" || 
+            shipModel.getDistanceApproximate() == "7") {
                 return true;
             }
             return false;
         }
 
         private boolean isDiagonalCase() {
-            if (Configs.DISTANCE_APPROXIMATE.contains("1,4") || 
-            Configs.DISTANCE_APPROXIMATE.contains("2,8") || 
-            Configs.DISTANCE_APPROXIMATE.contains("4,2") || 
-            Configs.DISTANCE_APPROXIMATE.contains("5,6")) {
+            if (shipModel.getDistanceApproximate().contains("1,4") || 
+            shipModel.getDistanceApproximate().contains("2,8") || 
+            shipModel.getDistanceApproximate().contains("4,2") || 
+            shipModel.getDistanceApproximate().contains("5,6")) {
                 return true;
             }
             return false;
         }
 
         private boolean isMediumCase() {
-            if (Configs.DISTANCE_APPROXIMATE.contains("6,7") || 
-            Configs.DISTANCE_APPROXIMATE.contains("6,3") || 
-            Configs.DISTANCE_APPROXIMATE.contains("6,0") || 
-            Configs.DISTANCE_APPROXIMATE.contains("6,4") || 
-            Configs.DISTANCE_APPROXIMATE.contains("5,8") || 
-            Configs.DISTANCE_APPROXIMATE.contains("5,3") || 
-            Configs.DISTANCE_APPROXIMATE == "5" || 
-            Configs.DISTANCE_APPROXIMATE.contains("4,4") || 
-            Configs.DISTANCE_APPROXIMATE.contains("4,1")) {
+            if (shipModel.getDistanceApproximate().contains("6,7") || 
+            shipModel.getDistanceApproximate().contains("6,3") || 
+            shipModel.getDistanceApproximate().contains("6,0") || 
+            shipModel.getDistanceApproximate().contains("6,4") || 
+            shipModel.getDistanceApproximate().contains("5,8") || 
+            shipModel.getDistanceApproximate().contains("5,3") || 
+            shipModel.getDistanceApproximate() == "5" || 
+            shipModel.getDistanceApproximate().contains("4,4") || 
+            shipModel.getDistanceApproximate().contains("4,1")) {
                 return true;
             }
             return false;

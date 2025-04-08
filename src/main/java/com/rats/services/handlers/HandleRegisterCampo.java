@@ -1,5 +1,6 @@
 package com.rats.services.handlers;
 import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.rats.configs.HandleLog;
 import com.rats.interfaces.EventsEnum;
 import com.rats.interfaces.ICommunication;
 import com.rats.interfaces.IHandleChain;
@@ -22,9 +23,7 @@ public class HandleRegisterCampo implements IHandleChain {
 
 
                 if (request.getEvento() == EventsEnum.CampoLiberadoParaRegistro) {
-                    System.out.println("------------------------------------------------------------");
-                    System.out.println("Campo de batalha encontrado:  "+ request.getCorrelationId());
-                    System.out.println("------------------------------------------------------------");
+                    HandleLog.title("Campo de batalha encontrado "+request.getCorrelationId());  
 
                     Message message  = DirectorMessage.createRegisterMessage( request.getCorrelationId());
                     
@@ -37,9 +36,8 @@ public class HandleRegisterCampo implements IHandleChain {
                 }
 
                 if(request.getEvento() == EventsEnum.RegistrarNovamente) {
-                    System.out.println("------------------------------------------------------------");
-                    System.out.println("Novo registro no Campo:  "+ request.getCorrelationId());
-                    System.out.println("------------------------------------------------------------");
+                    HandleLog.title("Novo Registro "+request.getCorrelationId());  
+
 
                     Message message  = DirectorMessage.createRegisterMessage( request.getCorrelationId());
                     

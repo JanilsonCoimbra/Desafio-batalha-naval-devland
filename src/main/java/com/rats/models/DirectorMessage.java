@@ -28,6 +28,16 @@ public class DirectorMessage {
                 .setConteudo("{\"nomeNavio\":\""+Configs.SUBSCRIPTION_NAME+"\",\"posicaoAtaque\":{\"x\":"+positionX+",\"y\":"+positionY+"}}")
                 .build();
     }
+
+    public static Message createAttackFakeMessage() {
+        BuilderMessage builderMessage = new BuilderMessage();
+        return builderMessage 
+                .setCorrelationId("fake")
+                .setOrigem(Configs.SUBSCRIPTION_NAME)
+                .setEvento(EventsEnum.Ataque)
+                .setConteudo("{\"nomeNavio\":\""+Configs.SUBSCRIPTION_NAME+"\",\"posicaoAtaque\":{\"x\":"+"-1"+",\"y\":"+"10"+"}}")
+                .build();
+    }
 }
 
 
