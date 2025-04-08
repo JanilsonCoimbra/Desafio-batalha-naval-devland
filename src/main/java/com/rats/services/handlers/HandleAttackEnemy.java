@@ -34,7 +34,9 @@ public class HandleAttackEnemy implements IHandleChain {
                 String correlationId = request.getCorrelationId();
                 String message = shoot(correlationId);
                 ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
-                messageService.setCorrelationId(message.getCorrelationId());
+
+
+                // messageService.setCorrelationId(message.getCorrelationId());
 
                 ServiceBus service = ServiceBus.getInstance();
                 service.sendMessage(messageService);
@@ -72,8 +74,10 @@ public class HandleAttackEnemy implements IHandleChain {
         }
 
         private List<Integer> secondLevelShoot() {
-            Integer xAtack = Configs.SECOND_SET_SHOOT.get(0).get(0);
-            Integer yAtack = Configs.SECOND_SET_SHOOT.get(0).get(1);
+            //List<List<Long[]>> SECOND_SET_SHOOT
+
+            int xAtack = Configs.SECOND_SET_SHOOT.get(0).get(0)[0].intValue();
+            int yAtack = Configs.SECOND_SET_SHOOT. get(0).get(0)[1].intValue();
             Configs.SECOND_SET_SHOOT.remove(0);
             return Arrays.asList(xAtack, yAtack);
         }

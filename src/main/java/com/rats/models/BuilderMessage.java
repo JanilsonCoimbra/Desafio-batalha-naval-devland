@@ -34,7 +34,7 @@ public class BuilderMessage {
         return this;
     }
 
-    public BuilderMessage setConteudo(Object conteudo) {
+    public BuilderMessage setConteudo(String conteudo) {
         message.setConteudo(conteudo);
         return this;
     }

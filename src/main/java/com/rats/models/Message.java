@@ -10,7 +10,7 @@ public class Message implements ICommunication {
     private String navioDestino;
     private Map<String, Integer> pontuacaoNavios; // Alterado para Map<String, Integer>
     private EventsEnum evento;
-    private Object conteudo;
+    private String conteudo;
 
     @Override
     public String getCorrelationId() {
@@ -43,12 +43,12 @@ public class Message implements ICommunication {
     }
 
     @Override
-    public Object getConteudo() {
+    public String getConteudo() {
         return conteudo;
     }
 
     @Override
-    public void setConteudo(Object conteudo) {
+    public void setConteudo(String conteudo) {
         this.conteudo = conteudo;
     }
 

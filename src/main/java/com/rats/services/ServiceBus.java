@@ -92,8 +92,7 @@ public class ServiceBus {
 				ObjectMapper objectMapper = new ObjectMapper();
 				objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
 
-				Message messageReceived;
-		        messageReceived = objectMapper.readValue(message.getBody().toString(), Message.class);
+				Message messageReceived = objectMapper.readValue(message.getBody().toString(), Message.class);
 				
 				System.out.printf("Contents from %s: %s%n", setLog, message.getBody());
 				System.out.println("------------------------------------------------------------");

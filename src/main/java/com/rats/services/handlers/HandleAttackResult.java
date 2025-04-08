@@ -4,10 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rats.configs.Configs;
 import com.rats.interfaces.EventsEnum;
 import com.rats.interfaces.ICommunication;
 import com.rats.interfaces.IHandleChain;
+import com.rats.models.AttackResultContent;
 import com.rats.models.DirectorMessage;
 import com.rats.models.Message;
 import com.rats.services.ServiceBus;
@@ -32,13 +34,29 @@ public class HandleAttackResult implements IHandleChain {
                 System.out.println("Atack Result: Processing message.");
                 System.out.println("------------------------------------------------------------");  
 
-                if(isGoodShoot(request.getConteudo().toString())) {
-                    Configs.SHOOT_LEVEL = 1;
-                    //TODO: serializar o conteudo
-                    // Configs.DISTANCE_APPROXIMATE = request.getConteudo().get("distancia aproximada");
-                    // Configs.SECOND_SET_SHOOT = calcularPosicoesPossiveis(Configs.X_GOOD_SHOOT, Configs.Y_GOOD_SHOOT, Configs.DISTANCE_APPROXIMATE);
-                }
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
                 
+                try {
+                    AttackResultContent messageReceived = objectMapper.readValue(request.getConteudo(), AttackResultContent.class);
+                    System.out.println("Distancia aproximada: " + messageReceived.getDistanciaAproximada());
+
+                    if (messageReceived.getDistanciaAproximada() <= 7) {
+                        Configs.SHOOT_LEVEL = 1;
+
+                        System.out.println("Distancia menor que 7: " + messageReceived.getDistanciaAproximada());
+
+                        Configs.DISTANCE_APPROXIMATE = String.valueOf(messageReceived.getDistanciaAproximada());
+                        List<Long[]> wrappedPositions = new ArrayList<>();
+                        calcularPosicoesPossiveis(messageReceived.getPosicao().getX(), messageReceived.getPosicao().getY(), messageReceived.getDistanciaAproximada())
+                            .forEach(pos -> wrappedPositions.add(Arrays.stream(pos).boxed().toArray(Long[]::new)));
+                        Configs.SECOND_SET_SHOOT.add(wrappedPositions);
+
+                        System.out.println("Posicoes possiveis: " + wrappedPositions);
+                    }
+                } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+                    System.err.println("Error processing JSON: " + e.getMessage());
+                }
             }
 
             if (nextHandler != null) {

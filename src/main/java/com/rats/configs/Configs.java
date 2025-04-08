@@ -46,7 +46,7 @@ public class Configs {
     }
 
     public static String DISTANCE_APPROXIMATE = "1000.0";
-    public static List<List<Integer>> SECOND_SET_SHOOT = new ArrayList<>();
+    public static List<List<Long[]>> SECOND_SET_SHOOT = new ArrayList<>();
 
     private Configs() {}
 }
