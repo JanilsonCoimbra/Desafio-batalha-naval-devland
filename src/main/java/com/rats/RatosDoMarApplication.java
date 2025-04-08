@@ -13,7 +13,7 @@ public class RatosDoMarApplication {
 	public static void main(String[] args) throws InterruptedException {
 		SpringApplication.run(RatosDoMarApplication.class, args);
 
-		ServiceBus service = new ServiceBus();
+		ServiceBus service = ServiceBus.getInstance();
 		service.receiveMessages();
 
 	}

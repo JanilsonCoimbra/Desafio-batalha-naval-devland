@@ -1,6 +1,7 @@
 package com.rats.services;
 
 import java.util.concurrent.TimeUnit;
+
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusException;
@@ -19,57 +20,99 @@ import com.rats.services.handlers.HandleCryptography;
 import com.rats.services.handlers.HandleRegisterCampo;
 import com.rats.validations.JsonValidate;
 public class ServiceBus {
-	
+
+	static ServiceBus serviceBus;
+	static ServiceBusClientBuilder serviceBuilder;
+	static ServiceBusProcessorClient processorClient;
 	static String connectionString = Configs.CONNECTION_STRING;
 	static String topicName = Configs.TOPIC_NAME;
 	static String subscriptionName = Configs.SUBSCRIPTION_NAME;
+
+
+	private ServiceBus() {
+	
+	}
+
+	public static ServiceBus getInstance() {
+		if(serviceBus == null) {
+			serviceBus = new ServiceBus();
+			serviceBuilder = new ServiceBusClientBuilder();
+		}	
+		return serviceBus;
+	}
 	
 	public void sendMessage(ServiceBusMessage message)
 	{
-	    ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
+		try {
+			if(serviceBuilder == null) {
+				serviceBuilder = new ServiceBusClientBuilder();
+			}
+
+			ServiceBusSenderClient senderClient = serviceBuilder
 	            .connectionString(connectionString)
 	            .sender()
 	            .topicName(topicName)
 	            .buildClient();
-
+		
 	    senderClient.sendMessage(message);
-	    System.out.println("Sent a single message to the topic: " + topicName);
+
+		} catch (Exception e) {
+			System.out.println("Error sending message: " + e.getMessage());
+		} finally {
+			if(serviceBuilder != null) {
+				serviceBuilder = null;
+			}
+		}
+	
 	}
 		
 	public void receiveMessages() throws InterruptedException
 	{
-	    ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
-	        .connectionString(connectionString)
-	        .processor()
-	        .topicName(topicName)
-	        .subscriptionName(subscriptionName)
-			.processMessage(ServiceBus::processMessage)
-	        .processError(context -> processError(context))
-	        .buildProcessorClient();
-	    processorClient.start();
+		if(processorClient == null) {
+			ServiceBusProcessorClient processorClient = serviceBuilder
+				.connectionString(connectionString)
+				.processor()
+				.topicName(topicName)
+				.subscriptionName(subscriptionName)
+				.maxConcurrentCalls(1)
+				.processMessage(ServiceBus::processMessage)
+				.processError(context -> processError(context))
+				.buildProcessorClient();
+			processorClient.start();
+		}
 	}
 	
 	private static void processMessage(ServiceBusReceivedMessageContext context) {
 	    ServiceBusReceivedMessage message = context.getMessage();
-		System.out.println("------------------------------------------------------------");
-	    System.out.printf("Contents: %s%n", message.getBody());	
-		System.out.println("------------------------------------------------------------");
-	
-			
+			String setLog = Configs.SUBSCRIPTION_NAME;
 		    try {
 				JsonValidate.isValidJson(message.getBody().toString());
-
+				
 				ObjectMapper objectMapper = new ObjectMapper();
+				objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
+
 				Message messageReceived;
 		        messageReceived = objectMapper.readValue(message.getBody().toString(), Message.class);
+				
+				System.out.printf("Contents from %s: %s%n", setLog, message.getBody());
+				System.out.println("------------------------------------------------------------");
+
+				if(messageReceived.getNavioDestino().equals(setLog)) {
+					System.out.printf("Contents from %s: %s%n", setLog, message.getBody());
+					System.out.println("------------------------------------------------------------");
+				}
+				
+
 
 				IHandleChain handler = new HandleCryptography();
 				handler.next(new HandleRegisterCampo())
 						.next(new HandleAttackEnemy());
 				handler.validate(messageReceived);
 
+
+				
 		    } catch (Exception e) {
-		        System.out.println("Error converting message to MessageReceived: " + e.getMessage());
+				System.out.println("Error converting message to MessageReceived: " + e.getMessage());
 		    }	
 			
 	}

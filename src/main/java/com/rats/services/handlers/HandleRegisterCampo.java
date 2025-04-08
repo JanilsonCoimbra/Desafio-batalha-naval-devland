@@ -30,7 +30,7 @@ public class HandleRegisterCampo implements IHandleChain {
                     
                     ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
 
-                    ServiceBus service = new ServiceBus();
+                    ServiceBus service = ServiceBus.getInstance();
                     service.sendMessage(messageService);
 
                     return request;
@@ -45,7 +45,7 @@ public class HandleRegisterCampo implements IHandleChain {
                     
                     ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
 
-                    ServiceBus service = new ServiceBus();
+                    ServiceBus service = ServiceBus.getInstance();
                     service.sendMessage(messageService);
 
                 }

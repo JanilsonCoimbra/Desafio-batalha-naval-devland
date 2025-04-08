@@ -86,12 +86,33 @@ public class Message implements ICommunication {
 
     @Override
     public String toString() {
-        return "{" +
-        "\"correlationId\":\"" + correlationId + "\"," +
-        "\"origem\":\"" + origem + "\"," +
-        "\"evento\":\"" + (evento != null ? evento.name() : null) + "\"," +
-        "\"conteudo\":\"" + formatConteudo().replace("\"", "\\\"") + "\"," +
-        "\"pontuacaoNavios\":" + (pontuacaoNavios != null ? pontuacaoNavios.toString() : "{}") +
-        "}";
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+
+        if (correlationId != null) {
+            sb.append("\"correlationId\":\"").append(correlationId).append("\",");
+        }
+        if (origem != null) {
+            sb.append("\"origem\":\"").append(origem).append("\",");
+        }
+        if (navioDestino != null) {
+            sb.append("\"navioDestino\":\"").append(navioDestino).append("\",");
+        }
+        if (evento != null) {
+            sb.append("\"evento\":\"").append(evento.name()).append("\",");
+        }
+        if (conteudo != null) {
+            sb.append("\"conteudo\":\"").append(formatConteudo().replace("\"", "\\\"")).append("\",");
+        }
+        if (pontuacaoNavios != null) {
+            sb.append("\"pontuacaoNavios\":").append(pontuacaoNavios.toString()).append(",");
+        }
+
+        if (sb.charAt(sb.length() - 1) == ',') {
+            sb.deleteCharAt(sb.length() - 1);
+        }
+
+        sb.append("}");
+        return sb.toString();
     }
 }

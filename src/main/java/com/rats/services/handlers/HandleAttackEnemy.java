@@ -22,14 +22,14 @@ public class HandleAttackEnemy implements IHandleChain {
 
             if (request.getEvento() == EventsEnum.LiberacaoAtaque && request.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
                 
-                System.out.println("------------------------------------------------------------");
                 System.out.println("Atack: Processing message.");
                 System.out.println("------------------------------------------------------------");  
                 
                 Message message = DirectorMessage.createAttackMessage(request.getCorrelationId(), (byte) 1, (byte) 2);
                 ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
+                messageService.setCorrelationId(message.getCorrelationId());
 
-                ServiceBus service = new ServiceBus();
+                ServiceBus service = ServiceBus.getInstance();
                 service.sendMessage(messageService);
             }
 
