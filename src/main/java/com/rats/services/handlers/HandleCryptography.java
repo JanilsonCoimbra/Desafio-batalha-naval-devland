@@ -14,7 +14,6 @@ public class HandleCryptography implements IHandleChain {
     
         @Override
         public ICommunication validate(ICommunication request) {
-                System.out.println("------------------------------------------------------------");
                 System.out.println("Cryptography: Processing message.");
                 System.out.println("------------------------------------------------------------");
 
