@@ -16,6 +16,7 @@ import com.rats.configs.Configs;
 import com.rats.interfaces.IHandleChain;
 import com.rats.models.Message;
 import com.rats.services.handlers.HandleAttackEnemy;
+import com.rats.services.handlers.HandleAttackResult;
 import com.rats.services.handlers.HandleCryptography;
 import com.rats.services.handlers.HandleRegisterCampo;
 import com.rats.validations.JsonValidate;
@@ -106,6 +107,7 @@ public class ServiceBus {
 
 				IHandleChain handler = new HandleCryptography();
 				handler.next(new HandleRegisterCampo())
+                        .next(new HandleAttackResult())
 						.next(new HandleAttackEnemy());
 				handler.validate(messageReceived);
 
