@@ -44,7 +44,7 @@ public class Configs {
         FIRST_SET_SHOOT.add(Arrays.asList(16, 1));
         FIRST_SET_SHOOT.add(Arrays.asList(5, 1));
     }
-
+    // public static final List<List<Integer>> SECOND_SET_SHOOT = new ArrayList<>();
 
     private Configs() {}
 }

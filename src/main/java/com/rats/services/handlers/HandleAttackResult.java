@@ -47,17 +47,22 @@ public class HandleAttackResult implements IHandleChain {
                         List<long[]> wrappedPositions = new ArrayList<>();
                         wrappedPositions = CalculadoraDeBatalha.calcularPosicoesPossiveis(messageReceived.getPosicao().getX(), messageReceived.getPosicao().getY(), messageReceived.getDistanciaAproximada());
                         shipModel.secondSetShoot.add(wrappedPositions);
-                    } else if (messageReceived.isAcertou() && shipModel.getShootLevel() == 1) {
+                    } else if (messageReceived.isAcertou() && (shipModel.getShootLevel() == 1 || shipModel.getShootLevel() == 0)) {
                         shipModel.setShootLevel(2);
                         System.out.println("Acertou: " + messageReceived.isAcertou());
                         
                         List<long[]> wrappedPositions = new ArrayList<>();
                         int x = messageReceived.getPosicao().getX().intValue();
                         int y = messageReceived.getPosicao().getY().intValue();
+                        wrappedPositions.add(new long[] {x - 2, y});
+                        wrappedPositions.add(new long[] {x, y - 2});
+                        wrappedPositions.add(new long[] {x + 2, y});
+                        wrappedPositions.add(new long[] {x, y + 2});
                         wrappedPositions.add(new long[] {x - 1, y});
                         wrappedPositions.add(new long[] {x, y - 1});
-                        wrappedPositions.add(new long[] {x - 1, y});
-                        wrappedPositions.add(new long[] {x, y - 1});
+                        wrappedPositions.add(new long[] {x + 1, y});
+                        wrappedPositions.add(new long[] {x, y + 1});
+                        System.out.println("wrappedPositions: " + wrappedPositions);
                         shipModel.thirdSetShoot.add(wrappedPositions);
                     }
                 } catch (com.fasterxml.jackson.core.JsonProcessingException e) {

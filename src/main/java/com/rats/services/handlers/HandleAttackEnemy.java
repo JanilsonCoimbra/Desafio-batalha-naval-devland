@@ -34,6 +34,7 @@ public class HandleAttackEnemy implements IHandleChain {
                 HandleLog.title("Atack: Processing message");  
 
                 String correlationId = request.getCorrelationId();
+                // Calibrar para não atirar no próprio barco
                 String message = shoot(correlationId);
                 ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
 
@@ -95,57 +96,57 @@ public class HandleAttackEnemy implements IHandleChain {
             return Arrays.asList(xAtack, yAtack);
         }
 
-        private List<List<Integer>> setSecondLevelShoot() {
-            if (shipModel.getDistanceApproximate() == "1000.0") {
-                shipModel.setShootLevel(0);
-                return Arrays.asList(Arrays.asList(0, 0));
-            } else if (isPerpendicularCase()) {
-                shipModel.setShootLevel(1);
-                return Arrays.asList(Arrays.asList(0, 0));
-            } else if (shipModel.getDistanceApproximate() == "1000.0") {
-                shipModel.setShootLevel(2);
-                return Arrays.asList(Arrays.asList(0, 0));
-            }
-            return null;
-        }
+        // private List<List<Integer>> setSecondLevelShoot() {
+        //     if (shipModel.getDistanceApproximate() == "1000.0") {
+        //         shipModel.setShootLevel(0);
+        //         return Arrays.asList(Arrays.asList(0, 0));
+        //     } else if (isPerpendicularCase()) {
+        //         shipModel.setShootLevel(1);
+        //         return Arrays.asList(Arrays.asList(0, 0));
+        //     } else if (shipModel.getDistanceApproximate() == "1000.0") {
+        //         shipModel.setShootLevel(2);
+        //         return Arrays.asList(Arrays.asList(0, 0));
+        //     }
+        //     return null;
+        // }
 
-        private boolean isPerpendicularCase() {
-            if (shipModel.getDistanceApproximate() == "1" || 
-            shipModel.getDistanceApproximate() == "2" || 
-            shipModel.getDistanceApproximate() == "3" || 
-            shipModel.getDistanceApproximate() == "4" || 
-            shipModel.getDistanceApproximate() == "5" || 
-            shipModel.getDistanceApproximate() == "6" || 
-            shipModel.getDistanceApproximate() == "7") {
-                return true;
-            }
-            return false;
-        }
+        // private boolean isPerpendicularCase() {
+        //     if (shipModel.getDistanceApproximate() == "1" || 
+        //     shipModel.getDistanceApproximate() == "2" || 
+        //     shipModel.getDistanceApproximate() == "3" || 
+        //     shipModel.getDistanceApproximate() == "4" || 
+        //     shipModel.getDistanceApproximate() == "5" || 
+        //     shipModel.getDistanceApproximate() == "6" || 
+        //     shipModel.getDistanceApproximate() == "7") {
+        //         return true;
+        //     }
+        //     return false;
+        // }
 
-        private boolean isDiagonalCase() {
-            if (shipModel.getDistanceApproximate().contains("1,4") || 
-            shipModel.getDistanceApproximate().contains("2,8") || 
-            shipModel.getDistanceApproximate().contains("4,2") || 
-            shipModel.getDistanceApproximate().contains("5,6")) {
-                return true;
-            }
-            return false;
-        }
+        // private boolean isDiagonalCase() {
+        //     if (shipModel.getDistanceApproximate().contains("1,4") || 
+        //     shipModel.getDistanceApproximate().contains("2,8") || 
+        //     shipModel.getDistanceApproximate().contains("4,2") || 
+        //     shipModel.getDistanceApproximate().contains("5,6")) {
+        //         return true;
+        //     }
+        //     return false;
+        // }
 
-        private boolean isMediumCase() {
-            if (shipModel.getDistanceApproximate().contains("6,7") || 
-            shipModel.getDistanceApproximate().contains("6,3") || 
-            shipModel.getDistanceApproximate().contains("6,0") || 
-            shipModel.getDistanceApproximate().contains("6,4") || 
-            shipModel.getDistanceApproximate().contains("5,8") || 
-            shipModel.getDistanceApproximate().contains("5,3") || 
-            shipModel.getDistanceApproximate() == "5" || 
-            shipModel.getDistanceApproximate().contains("4,4") || 
-            shipModel.getDistanceApproximate().contains("4,1")) {
-                return true;
-            }
-            return false;
-        }
+        // private boolean isMediumCase() {
+        //     if (shipModel.getDistanceApproximate().contains("6,7") || 
+        //     shipModel.getDistanceApproximate().contains("6,3") || 
+        //     shipModel.getDistanceApproximate().contains("6,0") || 
+        //     shipModel.getDistanceApproximate().contains("6,4") || 
+        //     shipModel.getDistanceApproximate().contains("5,8") || 
+        //     shipModel.getDistanceApproximate().contains("5,3") || 
+        //     shipModel.getDistanceApproximate() == "5" || 
+        //     shipModel.getDistanceApproximate().contains("4,4") || 
+        //     shipModel.getDistanceApproximate().contains("4,1")) {
+        //         return true;
+        //     }
+        //     return false;
+        // }
 
         public static List<long[]> calcularPosicoesPossiveis(long x, long y, double raio) {
             List<long[]> posicoes = new ArrayList<>();
