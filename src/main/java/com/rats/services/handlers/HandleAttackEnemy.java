@@ -59,6 +59,8 @@ public class HandleAttackEnemy implements IHandleChain {
                 x_y_try = firstLevelShoot();
             } else if (shipModel.getShootLevel() == 1) {
                 x_y_try = secondLevelShoot();
+            } else if (shipModel.getShootLevel() == 2) {
+                x_y_try = thirdLevelShoot();
             }
 
             System.out.println("------------------------------------------------------------");
@@ -76,10 +78,19 @@ public class HandleAttackEnemy implements IHandleChain {
         }
 
         private List<Integer> secondLevelShoot() {
-            //List<List<Long[]>> SECOND_SET_SHOOT
+            // print para debug 
+            System.out.println("------------------------------------------------------------");
+            System.out.println("Atack: Second level shoot: " + shipModel.getSecondSetShoot().toString());
+            System.out.println("------------------------------------------------------------");
+            int xAtack = (int) shipModel.secondSetShoot.get(0).get(0)[0];
+            int yAtack = (int) shipModel.secondSetShoot. get(0).get(0)[1];
+            shipModel.getSecondSetShoot().remove(0);
+            return Arrays.asList(xAtack, yAtack);
+        }
 
-            int xAtack = shipModel.secondSetShoot.get(0).get(0)[0].intValue();
-            int yAtack = shipModel.secondSetShoot. get(0).get(0)[1].intValue();
+        private List<Integer> thirdLevelShoot() {
+            int xAtack = (int) shipModel.thirdSetShoot.get(0).get(0)[0];
+            int yAtack = (int) shipModel.thirdSetShoot. get(0).get(0)[1];
             shipModel.getSecondSetShoot().remove(0);
             return Arrays.asList(xAtack, yAtack);
         }

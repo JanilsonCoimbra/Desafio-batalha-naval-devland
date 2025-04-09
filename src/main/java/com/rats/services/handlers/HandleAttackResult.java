@@ -38,17 +38,27 @@ public class HandleAttackResult implements IHandleChain {
                     AttackResultContent messageReceived = objectMapper.readValue(request.getConteudo(), AttackResultContent.class);
                     System.out.println("Distancia aproximada: " + messageReceived.getDistanciaAproximada());
 
-                    if (messageReceived.getDistanciaAproximada() <= 7) {
+                    if (messageReceived.getDistanciaAproximada() <= 7 && shipModel.getShootLevel() == 0) {
                         shipModel.setShootLevel(1);
 
                         System.out.println("Distancia menor que 7: " + messageReceived.getDistanciaAproximada());
 
                         shipModel.distanceApproximate = String.valueOf(messageReceived.getDistanciaAproximada());
-                        List<Long[]> wrappedPositions = new ArrayList<>();
-                        CalculadoraDeBatalha.calcularPosicoesPossiveis(messageReceived.getPosicao().getX(), messageReceived.getPosicao().getY(), messageReceived.getDistanciaAproximada())
-                            .forEach(pos -> wrappedPositions.add(Arrays.stream(pos).boxed().toArray(Long[]::new)));
-                            shipModel.secondSetShoot.add(wrappedPositions);
+                        List<long[]> wrappedPositions = new ArrayList<>();
+                        wrappedPositions = CalculadoraDeBatalha.calcularPosicoesPossiveis(messageReceived.getPosicao().getX(), messageReceived.getPosicao().getY(), messageReceived.getDistanciaAproximada());
+                        shipModel.secondSetShoot.add(wrappedPositions);
+                    } else if (messageReceived.isAcertou() && shipModel.getShootLevel() == 1) {
+                        shipModel.setShootLevel(2);
+                        System.out.println("Acertou: " + messageReceived.isAcertou());
                         
+                        List<long[]> wrappedPositions = new ArrayList<>();
+                        int x = messageReceived.getPosicao().getX().intValue();
+                        int y = messageReceived.getPosicao().getY().intValue();
+                        wrappedPositions.add(new long[] {x - 1, y});
+                        wrappedPositions.add(new long[] {x, y - 1});
+                        wrappedPositions.add(new long[] {x - 1, y});
+                        wrappedPositions.add(new long[] {x, y - 1});
+                        shipModel.thirdSetShoot.add(wrappedPositions);
                     }
                 } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
                     System.err.println("Error processing JSON: " + e.getMessage());
