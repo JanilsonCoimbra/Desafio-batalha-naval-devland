@@ -92,7 +92,7 @@ public class ServiceBus {
 
 				Message messageReceived = objectMapper.readValue(message.getBody().toString(), Message.class);
 				
-				HandleLog.title("Message received: " + message.getBody());  
+				HandleLog.title("Message received: " + message.getBody());
 
 				IHandleChain handler = new HandleCryptography();
 				handler.next(new HandleRegisterCampo())

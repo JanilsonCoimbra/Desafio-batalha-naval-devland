@@ -14,8 +14,6 @@ public class ShipModel {
     public final String orientation;
     private Integer shootLevel = 0;
     public String distanceApproximate;
-    public List<List<long[]>> secondSetShoot = new ArrayList<>();
-    private List<List<long[]>> thirdSetShoot = new ArrayList<>();
 
     public Position firstSuccessShootPosition;
     // Direita = 0, Esquerda = 1, Cima = 2, Baixo = 3
@@ -57,14 +55,6 @@ public class ShipModel {
         this.distanceApproximate = distanceApproximate;
     }
 
-    public List<List<long[]>> getSecondSetShoot() {
-        return secondSetShoot;
-    }
-
-    public void setSecondSetShoot(List<List<long[]>> secondSetShoot) {
-        this.secondSetShoot = secondSetShoot;
-    }
-
     public String getSubscriptionName() {
         return subscriptionName;
     }
@@ -79,26 +69,6 @@ public class ShipModel {
 
     public String getOrientation() {
         return orientation;
-    }
-
-    public List<List<long[]>> getThirdSetShoot() {
-        return thirdSetShoot;
-    }
-
-    public void setThirdSetShoot(List<List<long[]>> thirdSetShoot) {
-        if(thirdSetShoot == null) {
-            this.thirdSetShoot = new ArrayList<>();
-            throw new RuntimeException("Third set shoot is null");
-        }
-        this.thirdSetShoot.addAll(thirdSetShoot);
-    }
-
-    public void thirdSetShootRemove(int index) {
-        if(thirdSetShoot == null) {
-            this.thirdSetShoot = new ArrayList<>();
-            throw new RuntimeException("Third set shoot is null");
-        }
-        this.thirdSetShoot.remove(index);
     }
 
     public Position getFirstSuccessShootPosition() {

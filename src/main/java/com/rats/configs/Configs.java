@@ -13,7 +13,7 @@ public class Configs {
     public static final String POSITION_X = "20";
     public static final String ORIENTATION = "vertical";
     public static final String CRIPTOGRAFY_KEY_STRING = "ratos@2023";
-    public static final boolean ACTIVATE_LOG = false;
+    public static final boolean ACTIVATE_LOG = true;
     
     public static final List<List<Integer>> FIRST_SET_SHOOT = new ArrayList<>();
     static {
@@ -45,7 +45,8 @@ public class Configs {
         FIRST_SET_SHOOT.add(Arrays.asList(16, 1));
         FIRST_SET_SHOOT.add(Arrays.asList(5, 1));
     }
-    // public static final List<List<Integer>> SECOND_SET_SHOOT = new ArrayList<>();
+    public static List<List<Integer>> SECOND_SET_SHOOT;
+    public static List<List<Integer>> THIRD_SET_SHOOT;
 
     private Configs() {}
 }

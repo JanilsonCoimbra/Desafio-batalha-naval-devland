@@ -57,6 +57,7 @@ public class HandleAttackEnemy implements IHandleChain {
                 } else if (shipModel.getShootLevel() == 2) {
                     x_y_try = thirdLevelShoot();
                 }
+                // System.out.println("Atack: Random shot at coordinates: (" + x_y_try.get(0) + ", " + x_y_try.get(1) + ")");
                 HandleLog.title("Atack: Random shot at coordinates: (" + x_y_try.get(0) + ", " + x_y_try.get(1) + ")");
                 Message message = DirectorMessage.createAttackMessage(correlationId, x_y_try.get(0).byteValue(), x_y_try.get(1).byteValue());
                 return message.toString();
@@ -76,10 +77,10 @@ public class HandleAttackEnemy implements IHandleChain {
 
         private List<Integer> secondLevelShoot() {
             try{
-                HandleLog.title("Atack: Second level shoot: " + shipModel.getSecondSetShoot().toString());
+                HandleLog.title("Atack: Second level shoot: " + Configs.SECOND_SET_SHOOT.toString());
 
-                Long xAttackLong = shipModel.secondSetShoot.get(0).get(0)[0];
-                Long yAttackLong = shipModel.secondSetShoot.get(0).get(0)[1];
+                Long xAttackLong = Configs.SECOND_SET_SHOOT.get(0).get(0).longValue();
+                Long yAttackLong = Configs.SECOND_SET_SHOOT.get(0).get(1).longValue();
 
                 if (xAttackLong == null || yAttackLong == null) {
                     throw new RuntimeException("Error in second level shoot: xAttack or yAttack is null");
@@ -88,7 +89,7 @@ public class HandleAttackEnemy implements IHandleChain {
                 //Long ton Integer
                 Integer xAtack = xAttackLong.intValue();
                 Integer yAtack = yAttackLong.intValue();
-                shipModel.secondSetShoot.remove(0);
+                Configs.SECOND_SET_SHOOT.remove(0);
                 return Arrays.asList(xAtack, yAtack);
             } catch (Exception e) {
                 HandleLog.title("Second level shoot: " + e.getMessage());
@@ -98,8 +99,10 @@ public class HandleAttackEnemy implements IHandleChain {
 
         private List<Integer> thirdLevelShoot() {
             try{
-                Long xAttackLong = shipModel.getThirdSetShoot().get(0).get(0)[0];
-                Long yAttackLong = shipModel.getThirdSetShoot().get(0).get(0)[1];
+                HandleLog.title("Atack: Third level shoot: " + Configs.THIRD_SET_SHOOT.toString());
+
+                Long xAttackLong = Configs.THIRD_SET_SHOOT.get(0).get(0).longValue();
+                Long yAttackLong = Configs.THIRD_SET_SHOOT.get(0).get(1).longValue();
 
                 if (xAttackLong == null || yAttackLong == null) {
                     throw new RuntimeException("Error in third level shoot: xAttack or yAttack is null");
@@ -110,7 +113,11 @@ public class HandleAttackEnemy implements IHandleChain {
                 System.out.println("Atack: Third level shoot: " + xAttack + ", " + yAttack);
                 
 
-                shipModel.thirdSetShootRemove(0);
+                Configs.THIRD_SET_SHOOT.remove(0);
+                if (Configs.THIRD_SET_SHOOT.isEmpty()) {
+                    HandleLog.title("Atack: Third level shoot: " + Configs.THIRD_SET_SHOOT.toString());
+                    throw new RuntimeException("Error in third level shoot: Configs.THIRD_SET_SHOOT is empty");
+                }
                 return Arrays.asList(xAttack, yAttack);
             } catch (Exception e) {
                 HandleLog.title("Third level shoot: " + e.getMessage());

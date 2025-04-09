@@ -29,28 +29,24 @@ public class HandleAttackResult implements IHandleChain {
         public ICommunication validate(ICommunication request) {
 
             if (request.getEvento() == EventsEnum.ResultadoAtaqueEfetuado && request.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
-                HandleLog.title("Ataque recebido: ");  
                 
                 try {
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
-                AttackResultContent messageReceived = objectMapper.readValue(request.getConteudo(), AttackResultContent.class);
-                
-                    HandleLog.title("Distancia aproximada: " + messageReceived.getDistanciaAproximada());
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
+                    AttackResultContent messageReceived = objectMapper.readValue(request.getConteudo(), AttackResultContent.class);
 
                     if ((messageReceived.getDistanciaAproximada() >= 1 && messageReceived.getDistanciaAproximada() <= 7) && shipModel.getShootLevel() == 0) {
-                        System.out.println("Distancia maior que 1 e menor que 7: ");
-                        HandleLog.title("Distancia menor que 7: " + messageReceived.getDistanciaAproximada());
+                        HandleLog.title("SET SHOOT LEVEL 1: ");
                         shipModel.setShootLevel(1);
                         shipModel.distanceApproximate = String.valueOf(messageReceived.getDistanciaAproximada());
 
-                         List<long[]> wrappedPositions = CalculadoraDeBatalha.calcularPosicoesPossiveis(messageReceived.getPosicao().getX(), messageReceived.getPosicao().getY(), messageReceived.getDistanciaAproximada());
-                        wrappedPositions.forEach(item -> System.out.println(" Posicoes possiveis: "+Arrays.toString(item)));
+                        List<long[]> wrappedPositions = CalculadoraDeBatalha.calcularPosicoesPossiveis(messageReceived.getPosicao().getX(), messageReceived.getPosicao().getY(), messageReceived.getDistanciaAproximada());
 
-                        shipModel.setFirstSuccessShootPosition(messageReceived.getPosicao());    
-                        shipModel.secondSetShoot.add(wrappedPositions);
-
-                        shipModel.secondSetShoot.forEach(item -> System.out.println("Global Posicoes possiveis: "+Arrays.toString(item.toArray())));
+                        Configs.SECOND_SET_SHOOT = new ArrayList<>();
+                        wrappedPositions.forEach(item -> {
+                            System.out.println("Posicoes possiveis: "+Arrays.toString(item));
+                            Configs.SECOND_SET_SHOOT.add(Arrays.asList((int)item[0], (int)item[1]));
+                        });
 
                     } else if (messageReceived.isAcertou() && (shipModel.getShootLevel() == 1 || shipModel.getShootLevel() == 0)) {
                         shipModel.setShootLevel(2);
@@ -71,13 +67,18 @@ public class HandleAttackResult implements IHandleChain {
                         wrappedPositions.add(new long[] {x, y - 1});
                         wrappedPositions.add(new long[] {x + 1, y});
                         wrappedPositions.add(new long[] {x, y + 1});
-                        shipModel.setThirdSetShoot(Arrays.asList(wrappedPositions));
+                        Configs.THIRD_SET_SHOOT = new ArrayList<>();
+                        wrappedPositions.forEach(item -> {
+                            System.out.println("Posicoes possiveis: "+Arrays.toString(item));
+                            Configs.THIRD_SET_SHOOT.add(Arrays.asList((int)item[0], (int)item[1]));
+                        }); 
+                        wrappedPositions.forEach(
+                            item -> System.out.println("Posicoes possiveis: "+Arrays.toString(item)));
                     }
                 } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
                     throw new RuntimeException("Error processing JSON", e);
                 }
             }
-
             if (nextHandler != null) {
                 return nextHandler.validate(request);
 
