@@ -121,4 +121,14 @@ public class ServiceBus {
 	}
 
 
+	public void close() {
+		if(processorClient != null) {
+			processorClient.close();
+		}
+		if(serviceBuilder != null) {
+			serviceBuilder = null;
+		}
+	}
+
+
 }

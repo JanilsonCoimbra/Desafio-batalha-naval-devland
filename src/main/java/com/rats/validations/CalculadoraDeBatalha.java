@@ -5,6 +5,7 @@ import java.util.List;
 public class CalculadoraDeBatalha {
 
     public static List<long[]> calcularPosicoesPossiveis(long x, long y, double raio) {
+    System.out.println("Calculando posições possíveis para o ataque...");
         List<long[]> posicoes = new ArrayList<>();
         long raioInt = Math.round(raio);
         // Percorrer todas as posições dentro do raio
@@ -24,13 +25,7 @@ public class CalculadoraDeBatalha {
                 }
             }
         }
-        System.out.println("Posições possíveis: " + posicoes);
         return posicoes;
-    }
-
-    public boolean isGoodShoot(String result) {
-        // TODO: Se distancia aproximada != de 1000 true
-        return false;
     }
 
     private CalculadoraDeBatalha() {

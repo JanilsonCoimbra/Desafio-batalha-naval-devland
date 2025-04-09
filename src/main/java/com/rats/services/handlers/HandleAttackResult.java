@@ -31,42 +31,50 @@ public class HandleAttackResult implements IHandleChain {
             if (request.getEvento() == EventsEnum.ResultadoAtaqueEfetuado && request.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
                 HandleLog.title("Ataque recebido: ");  
                 
+                try {
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
+                AttackResultContent messageReceived = objectMapper.readValue(request.getConteudo(), AttackResultContent.class);
                 
-                try {
-                    AttackResultContent messageReceived = objectMapper.readValue(request.getConteudo(), AttackResultContent.class);
-                    System.out.println("Distancia aproximada: " + messageReceived.getDistanciaAproximada());
+                    HandleLog.title("Distancia aproximada: " + messageReceived.getDistanciaAproximada());
 
-                    if (messageReceived.getDistanciaAproximada() <= 7 && shipModel.getShootLevel() == 0) {
+                    if ((messageReceived.getDistanciaAproximada() >= 1 && messageReceived.getDistanciaAproximada() <= 7) && shipModel.getShootLevel() == 0) {
+                        System.out.println("Distancia maior que 1 e menor que 7: ");
+                        HandleLog.title("Distancia menor que 7: " + messageReceived.getDistanciaAproximada());
                         shipModel.setShootLevel(1);
-
-                        System.out.println("Distancia menor que 7: " + messageReceived.getDistanciaAproximada());
-
                         shipModel.distanceApproximate = String.valueOf(messageReceived.getDistanciaAproximada());
-                        List<long[]> wrappedPositions = new ArrayList<>();
-                        wrappedPositions = CalculadoraDeBatalha.calcularPosicoesPossiveis(messageReceived.getPosicao().getX(), messageReceived.getPosicao().getY(), messageReceived.getDistanciaAproximada());
+
+                         List<long[]> wrappedPositions = CalculadoraDeBatalha.calcularPosicoesPossiveis(messageReceived.getPosicao().getX(), messageReceived.getPosicao().getY(), messageReceived.getDistanciaAproximada());
+                        wrappedPositions.forEach(item -> System.out.println(" Posicoes possiveis: "+Arrays.toString(item)));
+
+                        shipModel.setFirstSuccessShootPosition(messageReceived.getPosicao());    
                         shipModel.secondSetShoot.add(wrappedPositions);
+
+                        shipModel.secondSetShoot.forEach(item -> System.out.println("Global Posicoes possiveis: "+Arrays.toString(item.toArray())));
+
                     } else if (messageReceived.isAcertou() && (shipModel.getShootLevel() == 1 || shipModel.getShootLevel() == 0)) {
                         shipModel.setShootLevel(2);
-                        System.out.println("Acertou: " + messageReceived.isAcertou());
+                        System.out.println("Acertou a posição e o nível de tiro é 1 ou 0: ");
+                        HandleLog.title("Acertou: " + messageReceived.isAcertou());
                         
                         List<long[]> wrappedPositions = new ArrayList<>();
-                        int x = messageReceived.getPosicao().getX().intValue();
-                        int y = messageReceived.getPosicao().getY().intValue();
+
+                        long x = messageReceived.getPosicao().getX();
+                        long y = messageReceived.getPosicao().getY();
+
                         wrappedPositions.add(new long[] {x - 2, y});
                         wrappedPositions.add(new long[] {x, y - 2});
                         wrappedPositions.add(new long[] {x + 2, y});
                         wrappedPositions.add(new long[] {x, y + 2});
+
                         wrappedPositions.add(new long[] {x - 1, y});
                         wrappedPositions.add(new long[] {x, y - 1});
                         wrappedPositions.add(new long[] {x + 1, y});
                         wrappedPositions.add(new long[] {x, y + 1});
-                        System.out.println("wrappedPositions: " + wrappedPositions);
-                        shipModel.thirdSetShoot.add(wrappedPositions);
+                        shipModel.setThirdSetShoot(Arrays.asList(wrappedPositions));
                     }
                 } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-                    System.err.println("Error processing JSON: " + e.getMessage());
+                    throw new RuntimeException("Error processing JSON", e);
                 }
             }
 
