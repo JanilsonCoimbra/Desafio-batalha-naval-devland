@@ -14,7 +14,5 @@ public class RatosDoMarApplication {
 
 		ServiceBus service = ServiceBus.getInstance();
 		service.receiveMessages();
-
 	}
-
 }

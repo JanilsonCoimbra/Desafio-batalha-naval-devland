@@ -13,6 +13,7 @@ import com.rats.interfaces.IHandleChain;
 import com.rats.models.AttackResultContent;
 import com.rats.models.ShipModel;
 import com.rats.validations.CalculadoraDeBatalha;
+import com.rats.validations.CorrelationIdValidate;
 public class HandleAttackResult implements IHandleChain {
 
     private IHandleChain nextHandler;
@@ -29,30 +30,32 @@ public class HandleAttackResult implements IHandleChain {
         public ICommunication validate(ICommunication request) {
 
             if (request.getEvento() == EventsEnum.ResultadoAtaqueEfetuado && request.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
-                HandleLog.title("Ataque recebido: ");  
-                
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
-                
-                try {
-                    AttackResultContent messageReceived = objectMapper.readValue(request.getConteudo(), AttackResultContent.class);
-                    System.out.println("Distancia aproximada: " + messageReceived.getDistanciaAproximada());
-
-                    if (messageReceived.getDistanciaAproximada() <= 7) {
-                        shipModel.setShootLevel(1);
-
-                        System.out.println("Distancia menor que 7: " + messageReceived.getDistanciaAproximada());
-
-                        shipModel.distanceApproximate = String.valueOf(messageReceived.getDistanciaAproximada());
-                        List<Long[]> wrappedPositions = new ArrayList<>();
-                        CalculadoraDeBatalha.calcularPosicoesPossiveis(messageReceived.getPosicao().getX(), messageReceived.getPosicao().getY(), messageReceived.getDistanciaAproximada())
-                            .forEach(pos -> wrappedPositions.add(Arrays.stream(pos).boxed().toArray(Long[]::new)));
-                            shipModel.secondSetShoot.add(wrappedPositions);
-                        
-                    }
-                } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-                    System.err.println("Error processing JSON: " + e.getMessage());
-                }
+            	if(CorrelationIdValidate.isValid(request.getCorrelationId())) {
+	                HandleLog.title("Ataque recebido: ");  
+	                
+	                ObjectMapper objectMapper = new ObjectMapper();
+	                objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
+	                
+	                try {
+	                    AttackResultContent messageReceived = objectMapper.readValue(request.getConteudo(), AttackResultContent.class);
+	                    System.out.println("Distancia aproximada: " + messageReceived.getDistanciaAproximada());
+	
+	                    if (messageReceived.getDistanciaAproximada() <= 7) {
+	                        shipModel.setShootLevel(1);
+	
+	                        System.out.println("Distancia menor que 7: " + messageReceived.getDistanciaAproximada());
+	
+	                        shipModel.distanceApproximate = String.valueOf(messageReceived.getDistanciaAproximada());
+	                        List<Long[]> wrappedPositions = new ArrayList<>();
+	                        CalculadoraDeBatalha.calcularPosicoesPossiveis(messageReceived.getPosicao().getX(), messageReceived.getPosicao().getY(), messageReceived.getDistanciaAproximada())
+	                            .forEach(pos -> wrappedPositions.add(Arrays.stream(pos).boxed().toArray(Long[]::new)));
+	                            shipModel.secondSetShoot.add(wrappedPositions);
+	                        
+	                    }
+	                } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+	                    System.err.println("Error processing JSON: " + e.getMessage());
+	                }
+            	}
             }
 
             if (nextHandler != null) {

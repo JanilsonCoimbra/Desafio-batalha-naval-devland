@@ -13,6 +13,7 @@ import com.rats.models.DirectorMessage;
 import com.rats.models.Message;
 import com.rats.models.ShipModel;
 import com.rats.services.ServiceBus;
+import com.rats.validations.CorrelationIdValidate;
 
 public class HandleAttackEnemy implements IHandleChain {
 
@@ -28,13 +29,12 @@ public class HandleAttackEnemy implements IHandleChain {
     
         @Override
         public ICommunication validate(ICommunication request) {
-
-
             if (request.getEvento() == EventsEnum.LiberacaoAtaque && request.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
                 HandleLog.title("Atack: Processing message");  
 
                 String correlationId = request.getCorrelationId();
                 String message = shoot(correlationId);
+                CorrelationIdValidate.add(correlationId);
                 ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
 
 
@@ -60,7 +60,7 @@ public class HandleAttackEnemy implements IHandleChain {
             } else if (shipModel.getShootLevel() == 1) {
                 x_y_try = secondLevelShoot();
             }
-
+            
             System.out.println("------------------------------------------------------------");
             System.out.println("Atack: Random shot at coordinates: (" + x_y_try.get(0) + ", " + x_y_try.get(1) + ")");
             Message message = DirectorMessage.createAttackMessage(correlationId, x_y_try.get(0).byteValue(), x_y_try.get(1).byteValue());
@@ -71,6 +71,7 @@ public class HandleAttackEnemy implements IHandleChain {
         private List<Integer> firstLevelShoot() {
             Integer xAtack = Configs.FIRST_SET_SHOOT.get(0).get(0);
             Integer yAtack = Configs.FIRST_SET_SHOOT.get(0).get(1);
+
             Configs.FIRST_SET_SHOOT.remove(0);
             return Arrays.asList(xAtack, yAtack);
         }
@@ -80,6 +81,7 @@ public class HandleAttackEnemy implements IHandleChain {
 
             int xAtack = shipModel.secondSetShoot.get(0).get(0)[0].intValue();
             int yAtack = shipModel.secondSetShoot. get(0).get(0)[1].intValue();
+            
             shipModel.getSecondSetShoot().remove(0);
             return Arrays.asList(xAtack, yAtack);
         }
