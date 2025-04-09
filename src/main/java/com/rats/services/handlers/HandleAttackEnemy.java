@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.rats.configs.Configs;
 import com.rats.configs.HandleLog;
 import com.rats.interfaces.EventsEnum;
@@ -30,18 +31,23 @@ public class HandleAttackEnemy implements IHandleChain {
         public ICommunication validate(ICommunication request) {
 
 
-            if (request.getEvento() == EventsEnum.LiberacaoAtaque && request.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
-                HandleLog.title("Atack: Processing message");  
+            try{
+                if (request.getEvento() == EventsEnum.LiberacaoAtaque && request.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
+                    HandleLog.title("Atack: Processing message");  
+    
+                    String correlationId = request.getCorrelationId();
+                    String message = shoot(correlationId);
+                    ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
+    
+    
+                    // messageService.setCorrelationId(message.getCorrelationId());
+    
+                    ServiceBus service = ServiceBus.getInstance();
+                    service.sendMessage(messageService);
+                }
 
-                String correlationId = request.getCorrelationId();
-                String message = shoot(correlationId);
-                ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
-
-
-                // messageService.setCorrelationId(message.getCorrelationId());
-
-                ServiceBus service = ServiceBus.getInstance();
-                service.sendMessage(messageService);
+            } catch (Exception e) {
+                HandleLog.title("Error in HandleAttackEnemy: " + e.getMessage());
             }
 
             if (nextHandler != null) {
@@ -52,7 +58,7 @@ public class HandleAttackEnemy implements IHandleChain {
             return request;
         }
 
-        private String shoot(String correlationId) {
+        private String shoot(String correlationId) throws JsonProcessingException {
             List<Integer> x_y_try = Arrays.asList(1, 1);
 
             if (shipModel.getShootLevel() == 0) {

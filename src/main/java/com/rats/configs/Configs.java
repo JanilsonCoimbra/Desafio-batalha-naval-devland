@@ -12,10 +12,11 @@ public class Configs {
     public static final String POSITION_Y = "20";
     public static final String POSITION_X = "20";
     public static final String ORIENTATION = "vertical";
-    public static final String CRIPTOGRAFY_KEY_STRING = "ratos@2023";
+    public static final String CRIPTOGRAFY_KEY_STRING;
     
     public static final List<List<Integer>> FIRST_SET_SHOOT = new ArrayList<>();
     static {
+        CRIPTOGRAFY_KEY_STRING = "";
         FIRST_SET_SHOOT.add(Arrays.asList(93, 23));
         FIRST_SET_SHOOT.add(Arrays.asList(82, 23));
         FIRST_SET_SHOOT.add(Arrays.asList(71, 23));
