@@ -2,7 +2,7 @@ package com.rats.models;
 
 public class AttackResultContent {
 
-    private Posicao posicao;
+    private Position posicao;
     private boolean acertou;
     private double distanciaAproximada;
 
@@ -11,11 +11,11 @@ public class AttackResultContent {
     }
 
     // Getters e Setters
-    public Posicao getPosicao() {
+    public Position getPosicao() {
         return posicao;
     }
 
-    public void setPosicao(Posicao posicao) {
+    public void setPosicao(Position posicao) {
         this.posicao = posicao;
     }
 
@@ -33,30 +33,5 @@ public class AttackResultContent {
 
     public void setDistanciaAproximada(double distanciaAproximada) {
         this.distanciaAproximada = distanciaAproximada;
-    }
-
-    // Classe interna para representar a posição
-    public static class Posicao {
-        private Long x;
-        private Long y;
-
-        public Posicao() {
-        }
-
-        public Long getX() {
-            return x;
-        }
-
-        public void setX(Long x) {
-            this.x = x;
-        }
-
-        public Long getY() {
-            return y;
-        }
-
-        public void setY(Long y) {
-            this.y = y;
-        }
     }
 }

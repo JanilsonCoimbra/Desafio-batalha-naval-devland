@@ -5,6 +5,7 @@ import java.util.List;
 public class CalculadoraDeBatalha {
 
     public static List<long[]> calcularPosicoesPossiveis(long x, long y, double raio) {
+    System.out.println("Calculando posições possíveis para o ataque...");
         List<long[]> posicoes = new ArrayList<>();
         long raioInt = Math.round(raio);
         // Percorrer todas as posições dentro do raio
@@ -16,7 +17,7 @@ public class CalculadoraDeBatalha {
                 double distanciaTeste = Math.round(Math.sqrt((double) (i * i + j * j)) * 100.0) / 100.0;
                 double raioArredondado = Math.round(raio * 100.0) / 100.0;
                 // Verificar se a posição está dentro dos limites da matriz
-                if (novoX >= 0 && novoX < 30 && novoY >= 0 && novoY < 100) {
+                if (novoX >= 0 && novoX < 100 && novoY >= 0 && novoY < 30) {
                     // Verificar se a posição está dentro do raio
                     if (distanciaTeste == raioArredondado) {
                         posicoes.add(new long[]{novoX, novoY});
@@ -24,13 +25,7 @@ public class CalculadoraDeBatalha {
                 }
             }
         }
-
         return posicoes;
-    }
-
-    public boolean isGoodShoot(String result) {
-        // TODO: Se distancia aproximada != de 1000 true
-        return false;
     }
 
     private CalculadoraDeBatalha() {

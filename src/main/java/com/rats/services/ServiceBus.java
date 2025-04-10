@@ -17,6 +17,7 @@ import com.rats.models.Message;
 import com.rats.services.handlers.HandleAttackEnemy;
 import com.rats.services.handlers.HandleAttackResult;
 import com.rats.services.handlers.HandleCryptography;
+import com.rats.services.handlers.HandleEndGame;
 import com.rats.services.handlers.HandleRegisterCampo;
 import com.rats.validations.JsonValidate;
 public class ServiceBus {
@@ -69,7 +70,7 @@ public class ServiceBus {
 	public void receiveMessages() throws InterruptedException
 	{
 		if(processorClient == null) {
-			ServiceBusProcessorClient processorClient = serviceBuilder
+			processorClient = serviceBuilder
 				.connectionString(connectionString)
 				.processor()
 				.topicName(topicName)
@@ -92,12 +93,13 @@ public class ServiceBus {
 
 				Message messageReceived = objectMapper.readValue(message.getBody().toString(), Message.class);
 				
-				HandleLog.title("Message received: " + message.getBody());  
+				HandleLog.title("Message received: " + message.getBody());
 
 				IHandleChain handler = new HandleCryptography();
 				handler.next(new HandleRegisterCampo())
                         .next(new HandleAttackResult())
-						.next(new HandleAttackEnemy());
+						.next(new HandleAttackEnemy())
+						.next(new HandleEndGame());
 				handler.validate(messageReceived);
 
 		    } catch (Exception e) {
@@ -118,6 +120,17 @@ public class ServiceBus {
 			}
 		} else {
 			System.out.println("Error occurred: " + context.getException().getMessage());
+		}
+	}
+
+
+	public static void close() {
+		if (processorClient != null) {
+			processorClient.stop(); // Para o processamento de mensagens
+			HandleLog.title("Stopping message processor...");
+		}
+		if (serviceBuilder != null) {
+			HandleLog.title("ServiceBus client builder cleared.");
 		}
 	}
 

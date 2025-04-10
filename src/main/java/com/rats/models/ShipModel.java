@@ -14,10 +14,10 @@ public class ShipModel {
     public final String orientation;
     private Integer shootLevel = 0;
     public String distanceApproximate;
-    public List<List<Long[]>> secondSetShoot = new ArrayList<>();
 
-
-
+    public Position firstSuccessShootPosition;
+    // Direita = 0, Esquerda = 1, Cima = 2, Baixo = 3
+    public int successDiretion;
 
     private ShipModel() {
         subscriptionName = Configs.SUBSCRIPTION_NAME;
@@ -55,12 +55,36 @@ public class ShipModel {
         this.distanceApproximate = distanceApproximate;
     }
 
-    public List<List<Long[]>> getSecondSetShoot() {
-        return secondSetShoot;
+    public String getSubscriptionName() {
+        return subscriptionName;
     }
 
-    public void setSecondSetShoot(List<List<Long[]>> secondSetShoot) {
-        this.secondSetShoot = secondSetShoot;
+    public String getPositionY() {
+        return positionY;
+    }
+
+    public String getPositionX() {
+        return positionX;
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public Position getFirstSuccessShootPosition() {
+        return firstSuccessShootPosition;
+    }
+
+    public void setFirstSuccessShootPosition(Position firstSuccessShootPosition) {
+        this.firstSuccessShootPosition = firstSuccessShootPosition;
+    }
+
+    public int getSuccessDiretion() {
+        return successDiretion;
+    }
+
+    public void setSuccessDiretion(int successDiretion) {
+        this.successDiretion = successDiretion;
     }
 
 
