@@ -47,7 +47,7 @@ public class HandleAttackResult implements IHandleChain {
                             System.out.println("Posicoes possiveis: "+Arrays.toString(item));
                             Configs.SECOND_SET_SHOOT.add(Arrays.asList((int)item[0], (int)item[1]));
                         });
-
+                        Configs.SECOND_SET_SHOOT.removeAll(Configs.SHIP_POSITIONS);
                     } else if (messageReceived.isAcertou() && (shipModel.getShootLevel() == 1 || shipModel.getShootLevel() == 0)) {
                         shipModel.setShootLevel(2);
                         System.out.println("Acertou a posição e o nível de tiro é 1 ou 0: ");
@@ -69,11 +69,15 @@ public class HandleAttackResult implements IHandleChain {
                         wrappedPositions.add(new long[] {x, y + 1});
                         Configs.THIRD_SET_SHOOT = new ArrayList<>();
                         wrappedPositions.forEach(item -> {
-                            System.out.println("Posicoes possiveis: "+Arrays.toString(item));
-                            Configs.THIRD_SET_SHOOT.add(Arrays.asList((int)item[0], (int)item[1]));
-                        }); 
-                        wrappedPositions.forEach(
-                            item -> System.out.println("Posicoes possiveis: "+Arrays.toString(item)));
+                            int xPos = (int) item[0];
+                            int yPos = (int) item[1];
+
+                            if (xPos >= 0 && xPos <= 99 && yPos >= 0 && yPos <= 29) {
+                                System.out.println("Posicoes válidas: " + Arrays.toString(item));
+                                Configs.THIRD_SET_SHOOT.add(Arrays.asList(xPos, yPos));
+                            }
+                        });
+                        Configs.THIRD_SET_SHOOT.removeAll(Configs.SHIP_POSITIONS);
                     }
                 } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
                     throw new RuntimeException("Error processing JSON", e);

@@ -12,6 +12,17 @@ public class Configs {
     public static final String POSITION_Y = "20";
     public static final String POSITION_X = "20";
     public static final String ORIENTATION = "vertical";
+    public static final int POSITION_Y_INT = 20;
+    public static final int POSITION_X_INT = 20;
+    public static final List<List<Integer>> SHIP_POSITIONS = new ArrayList<>();
+    static {
+        SHIP_POSITIONS.add(Arrays.asList(20, 18));
+        SHIP_POSITIONS.add(Arrays.asList(20, 19));
+        SHIP_POSITIONS.add(Arrays.asList(20, 20));
+        SHIP_POSITIONS.add(Arrays.asList(20, 21));
+        SHIP_POSITIONS.add(Arrays.asList(20, 22));
+    }
+
     public static final String CRIPTOGRAFY_KEY_STRING = "ratos@2023";
     public static final boolean ACTIVATE_LOG = true;
     
