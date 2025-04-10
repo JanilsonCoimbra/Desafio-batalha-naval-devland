@@ -12,8 +12,8 @@ public interface ICommunication {
     EventsEnum getEvento();
     void setEvento(EventsEnum evento);
 
-    String getConteudo();
-    void setConteudo(String conteudo);
+    Object getConteudo();
+    void setConteudo(Object conteudo);
 
     Map<String, Integer> getPontuacaoNavios();
     void setPontuacaoNavios(Map<String, Integer> pontuacaoNavios);

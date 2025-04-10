@@ -33,7 +33,7 @@ public class HandleAttackResult implements IHandleChain {
                 try {
                     ObjectMapper objectMapper = new ObjectMapper();
                     objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
-                    AttackResultContent messageReceived = objectMapper.readValue(request.getConteudo(), AttackResultContent.class);
+                    AttackResultContent messageReceived = objectMapper.readValue(request.getConteudo().toString(), AttackResultContent.class);
 
                     if ((messageReceived.getDistanciaAproximada() >= 1 && messageReceived.getDistanciaAproximada() <= 7) && shipModel.getShootLevel() == 0) {
                         HandleLog.title("SET SHOOT LEVEL 1: ");

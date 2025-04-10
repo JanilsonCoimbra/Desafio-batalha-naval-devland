@@ -21,35 +21,39 @@ public class HandleRegisterCampo implements IHandleChain {
         @Override
         public ICommunication validate(ICommunication request) {
 
-
-                if (request.getEvento() == EventsEnum.CampoLiberadoParaRegistro) {
-                    HandleLog.title("Campo de batalha encontrado "+request.getCorrelationId());  
-
-                    Message message  = DirectorMessage.createRegisterMessage( request.getCorrelationId());
+                try{
+                    if (request.getEvento() == EventsEnum.CampoLiberadoParaRegistro) {
+                        HandleLog.title("Campo de batalha encontrado "+request.getCorrelationId());  
+    
+                        Message message  = DirectorMessage.createRegisterMessage(request.getCorrelationId());
+                        
+                        ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
+    
+                        ServiceBus service = ServiceBus.getInstance();
+                        service.sendMessage(messageService);
+    
+                        return request;
+                    }
+    
+                    if(request.getEvento() == EventsEnum.RegistrarNovamente) {
+                        HandleLog.title("Novo Registro "+request.getCorrelationId());  
+    
+    
+                        Message message  = DirectorMessage.createRegisterMessage( request.getCorrelationId());
+                        
+                        ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
+    
+                        ServiceBus service = ServiceBus.getInstance();
+                        service.sendMessage(messageService);
+    
+                    }
+    
+                    if (nextHandler != null) {
+                        return nextHandler.validate(request);
+                    }
                     
-                    ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
-
-                    ServiceBus service = ServiceBus.getInstance();
-                    service.sendMessage(messageService);
-
-                    return request;
-                }
-
-                if(request.getEvento() == EventsEnum.RegistrarNovamente) {
-                    HandleLog.title("Novo Registro "+request.getCorrelationId());  
-
-
-                    Message message  = DirectorMessage.createRegisterMessage( request.getCorrelationId());
-                    
-                    ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
-
-                    ServiceBus service = ServiceBus.getInstance();
-                    service.sendMessage(messageService);
-
-                }
-
-                if (nextHandler != null) {
-                    return nextHandler.validate(request);
+                } catch (Exception e) {
+                    HandleLog.title("Error in HandleRegisterCampo: " + e.getMessage());
                 }
             
             return request;

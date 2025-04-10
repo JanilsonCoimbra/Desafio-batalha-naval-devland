@@ -103,7 +103,8 @@ public class ServiceBus {
 				handler.validate(messageReceived);
 
 		    } catch (Exception e) {
-				System.out.println("Error converting message to MessageReceived: " + e.getMessage());
+				HandleLog.title("Error deserializar message: " + message.getBody());
+				HandleLog.title("Error converting message to MessageReceived: " + e.getMessage());	
 		    }	
 			
 	}

@@ -10,7 +10,7 @@ public class Message implements ICommunication {
     private String navioDestino;
     private Map<String, Integer> pontuacaoNavios;
     private EventsEnum evento;
-    private String conteudo;
+    private Object conteudo;
 
     @Override
     public String getCorrelationId() {
@@ -43,12 +43,12 @@ public class Message implements ICommunication {
     }
 
     @Override
-    public String getConteudo() {
+    public Object getConteudo() {
         return conteudo;
     }
 
     @Override
-    public void setConteudo(String conteudo) {
+    public void setConteudo(Object conteudo) {
         this.conteudo = conteudo;
     }
 
@@ -74,9 +74,6 @@ public class Message implements ICommunication {
 
     private String formatConteudo() {
         try {
-            if (conteudo instanceof String) {
-                return (String) conteudo;
-            }
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.writeValueAsString(conteudo);
         } catch (Exception e) {
@@ -102,7 +99,7 @@ public class Message implements ICommunication {
             sb.append("\"evento\":\"").append(evento.name()).append("\",");
         }
         if (conteudo != null) {
-            sb.append("\"conteudo\":\"").append(formatConteudo().replace("\"", "\\\"")).append("\",");
+            sb.append("\"conteudo\":").append(formatConteudo().replace("\"", "\""));
         }
         if (pontuacaoNavios != null) {
             sb.append("\"pontuacaoNavios\":").append(pontuacaoNavios.toString()).append(",");
