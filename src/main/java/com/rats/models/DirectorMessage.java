@@ -1,7 +1,9 @@
 package com.rats.models;
+import java.util.logging.Logger;
 
 import com.rats.configs.Configs;
 import com.rats.interfaces.EventsEnum;
+import com.rats.validations.CalculadoraDeBatalha;
 
 public class DirectorMessage {
 
@@ -20,6 +22,16 @@ public class DirectorMessage {
 
 
     public static Message createAttackMessage(String correlationId, byte positionX, byte positionY) {
+        boolean isValidPosition = CalculadoraDeBatalha.isValidPosition(positionX, positionY);
+        boolean isPossitionMyShip = CalculadoraDeBatalha.isPossitionMyShip(positionX, positionY, Byte.parseByte(Configs.POSITION_X), Byte.parseByte(Configs.POSITION_Y), Configs.ORIENTATION);
+        
+        if(!isValidPosition || isPossitionMyShip) {
+            Logger.getLogger(DirectorMessage.class.getName()).warning("Posição inválida ou posição do meu navio, por favor escolha outra posição.");
+            positionX = 1;
+            positionY = 1;
+        }
+
+
         BuilderMessage builderMessage = new BuilderMessage();
         return builderMessage 
                 .setCorrelationId(correlationId)

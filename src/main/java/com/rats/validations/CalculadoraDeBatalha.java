@@ -28,6 +28,34 @@ public class CalculadoraDeBatalha {
         return posicoes;
     }
 
+    public static boolean  isValidPosition(long x, long y) {
+        return (x >= 0 && x < 100 && y >= 0 && y < 30);
+    }
+
+    public static boolean isPossitionMyShip(byte AttackX, byte AttackY, byte positionCentralX, byte positionCentralY, String orientation) {
+        byte ponta1DoNavio = 0;
+        byte ponta2DoNavio = 0;
+
+        if (orientation.equals("horizontal")) {
+            ponta1DoNavio = (byte) (positionCentralX - 2);
+            ponta2DoNavio = (byte) (positionCentralX + 2);
+        } else if (orientation.equals("vertical")) {
+            ponta1DoNavio = (byte) (positionCentralY - 2);
+            ponta2DoNavio = (byte) (positionCentralY + 2);
+        }
+
+        if(orientation.equals("horizontal") && AttackY == positionCentralY) {
+            if (AttackX >= ponta1DoNavio && AttackX <= ponta2DoNavio) {
+                return true;
+            }
+        } else if(orientation.equals("vertical") && AttackX == positionCentralX) {
+            if (AttackY >= ponta1DoNavio && AttackY <= ponta2DoNavio) {
+                return true;
+            }
+        }
+        return false; 
+    }
+
     private CalculadoraDeBatalha() {
     }
 }

@@ -2,8 +2,6 @@ package com.rats.services.handlers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rats.configs.Configs;
 import com.rats.configs.HandleLog;
@@ -33,9 +31,24 @@ public class HandleAttackResult implements IHandleChain {
                 try {
                     ObjectMapper objectMapper = new ObjectMapper();
                     objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
+                    
                     AttackResultContent messageReceived = objectMapper.readValue(payload.getConteudo().toString(), AttackResultContent.class);
 
-                    if ((messageReceived.getDistanciaAproximada() >= 1 && messageReceived.getDistanciaAproximada() <= 7) && shipModel.getShootLevel() == 0) {
+                    if(messageReceived.getDistanciaAproximada() == 5){
+                        System.out.println("Acertou a posição e o nível de tiro é 0: ");
+                        messageReceived.getPosicao().getX();
+                        messageReceived.getPosicao().getY();
+                        Configs.FIRST_SET_SHOOT_FIVE = new ArrayList<>();
+                        Configs.FIRST_SET_SHOOT_FIVE.add(Math.toIntExact(messageReceived.getPosicao().getX() - 1));
+                        Configs.FIRST_SET_SHOOT_FIVE.add(Math.toIntExact(messageReceived.getPosicao().getY()));
+
+                        if (nextHandler != null) {
+                            return nextHandler.validate(payload);
+            
+                        }
+                    }
+
+                    if ((messageReceived.getDistanciaAproximada() >= 1 && Math.floor(messageReceived.getDistanciaAproximada()) != 5  && messageReceived.getDistanciaAproximada() <= 7) && shipModel.getShootLevel() == 0) {
                         HandleLog.title("SET SHOOT LEVEL 1: ");
                         shipModel.setShootLevel(1);
                         shipModel.distanceApproximate = String.valueOf(messageReceived.getDistanciaAproximada());
@@ -44,11 +57,16 @@ public class HandleAttackResult implements IHandleChain {
 
                         Configs.SECOND_SET_SHOOT = new ArrayList<>();
                         wrappedPositions.forEach(item -> {
-                            System.out.println("Posicoes possiveis: "+Arrays.toString(item));
+                            System.out.println("Posicoes possiveis level 1: "+Arrays.toString(item));
                             Configs.SECOND_SET_SHOOT.add(Arrays.asList((int)item[0], (int)item[1]));
                         });
 
-                    } else if (messageReceived.isAcertou() && (shipModel.getShootLevel() == 1 || shipModel.getShootLevel() == 0)) {
+                        if (nextHandler != null) {
+                            return nextHandler.validate(payload);
+                        }
+                    } 
+                    
+                    if (messageReceived.isAcertou() && (shipModel.getShootLevel() == 1 || shipModel.getShootLevel() == 0)) {
                         shipModel.setShootLevel(2);
                         System.out.println("Acertou a posição e o nível de tiro é 1 ou 0: ");
                         HandleLog.title("Acertou: " + messageReceived.isAcertou());
@@ -69,11 +87,11 @@ public class HandleAttackResult implements IHandleChain {
                         wrappedPositions.add(new long[] {x, y + 1});
                         Configs.THIRD_SET_SHOOT = new ArrayList<>();
                         wrappedPositions.forEach(item -> {
-                            System.out.println("Posicoes possiveis: "+Arrays.toString(item));
+                            System.out.println("Posicoes possiveis level 2: "+Arrays.toString(item));
                             Configs.THIRD_SET_SHOOT.add(Arrays.asList((int)item[0], (int)item[1]));
                         }); 
-                        wrappedPositions.forEach(
-                            item -> System.out.println("Posicoes possiveis: "+Arrays.toString(item)));
+                        // wrappedPositions.forEach(
+                        //     item -> System.out.println("Posicoes possiveis: "+Arrays.toString(item)));
                     }
                 } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
                     throw new RuntimeException("Error processing JSON", e);

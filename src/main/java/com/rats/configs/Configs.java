@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.rats.interfaces.ShipOrientation;
+
 public class Configs {
     public static final String CONNECTION_STRING = "Endpoint=sb://servdevland.servicebus.windows.net/;SharedAccessKeyName=casaratolandia;SharedAccessKey=MUt2vhyqM/TwWxhad+DzI2L1wjyifG3wP+ASbPh+dYc=";
     public static final String TOPIC_NAME = "desafio.batalha_naval.casaratolandia";
@@ -11,7 +13,7 @@ public class Configs {
 
     public static final String POSITION_Y = "20";
     public static final String POSITION_X = "20";
-    public static final String ORIENTATION = "vertical";
+    public static final String ORIENTATION = ShipOrientation.HORIZONTAL.getOrientation();
     public static final String CRIPTOGRAFY_KEY_STRING;
     public static final boolean ACTIVATE_LOG = true;
     
@@ -46,6 +48,7 @@ public class Configs {
         FIRST_SET_SHOOT.add(Arrays.asList(16, 1));
         FIRST_SET_SHOOT.add(Arrays.asList(5, 1));
     }
+    public static List<Integer> FIRST_SET_SHOOT_FIVE;
     public static List<List<Integer>> SECOND_SET_SHOOT;
     public static List<List<Integer>> THIRD_SET_SHOOT;
 

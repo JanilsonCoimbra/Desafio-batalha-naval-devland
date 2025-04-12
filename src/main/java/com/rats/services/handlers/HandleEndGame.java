@@ -17,9 +17,9 @@ public class HandleEndGame implements IHandleChain {
     
         @Override
         public ICommunication validate(ICommunication payload) {
-                HandleLog.title(" EndGame: Processing message");
-
-                if(payload.getEvento() == EventsEnum.Vitoria) {
+            
+            if(payload.getEvento() == EventsEnum.Vitoria) {
+                    HandleLog.title(" EndGame: Processing message");
                     HandleLog.title("O JOGO ACABOU!");
                     ServiceBus.close();
                 }            

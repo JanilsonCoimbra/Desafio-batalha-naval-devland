@@ -48,6 +48,15 @@ public class HandleAttackEnemy implements IHandleChain {
 
         private String shoot(String correlationId) {
                 List<Integer> x_y_try = Arrays.asList(1, 1);
+
+                if (Configs.FIRST_SET_SHOOT_FIVE != null && !Configs.FIRST_SET_SHOOT_FIVE.isEmpty()) {
+                    x_y_try = Configs.FIRST_SET_SHOOT_FIVE;
+                    Configs.FIRST_SET_SHOOT_FIVE = null;
+                    HandleLog.title("Atack: enter if level five " + x_y_try.toString());
+
+                    Message message = DirectorMessage.createAttackMessage(correlationId, x_y_try.get(0).byteValue(), x_y_try.get(1).byteValue());
+                    return message.toString();
+                }
     
                 if (shipModel.getShootLevel() == 0) {
                     x_y_try = firstLevelShoot();
