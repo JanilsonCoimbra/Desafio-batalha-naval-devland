@@ -16,18 +16,18 @@ public class HandleEndGame implements IHandleChain {
         }
     
         @Override
-        public ICommunication validate(ICommunication request) {
+        public ICommunication validate(ICommunication payload) {
                 HandleLog.title(" EndGame: Processing message");
 
-                if(request.getEvento() == EventsEnum.Vitoria) {
+                if(payload.getEvento() == EventsEnum.Vitoria) {
                     HandleLog.title("O JOGO ACABOU!");
                     ServiceBus.close();
                 }            
 
                 if (nextHandler != null) {
-                    return nextHandler.validate(request);
+                    return nextHandler.validate(payload);
                 }
             
-            return request;
+            return payload;
         }
 }

@@ -26,14 +26,14 @@ public class HandleAttackResult implements IHandleChain {
         }
     
         @Override
-        public ICommunication validate(ICommunication request) {
+        public ICommunication validate(ICommunication payload) {
 
-            if (request.getEvento() == EventsEnum.ResultadoAtaqueEfetuado && request.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
+            if (payload.getEvento() == EventsEnum.ResultadoAtaqueEfetuado && payload.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
                 
                 try {
                     ObjectMapper objectMapper = new ObjectMapper();
                     objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
-                    AttackResultContent messageReceived = objectMapper.readValue(request.getConteudo().toString(), AttackResultContent.class);
+                    AttackResultContent messageReceived = objectMapper.readValue(payload.getConteudo().toString(), AttackResultContent.class);
 
                     if ((messageReceived.getDistanciaAproximada() >= 1 && messageReceived.getDistanciaAproximada() <= 7) && shipModel.getShootLevel() == 0) {
                         HandleLog.title("SET SHOOT LEVEL 1: ");
@@ -80,11 +80,11 @@ public class HandleAttackResult implements IHandleChain {
                 }
             }
             if (nextHandler != null) {
-                return nextHandler.validate(request);
+                return nextHandler.validate(payload);
 
             }
             
-            return request;
+            return payload;
         }
 
 }

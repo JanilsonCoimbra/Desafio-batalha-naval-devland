@@ -16,21 +16,21 @@ public class HandleCryptography implements IHandleChain {
         }
     
         @Override
-        public ICommunication validate(ICommunication request) {
+        public ICommunication validate(ICommunication payload) {
             
                 if(!Configs.CRIPTOGRAFY_KEY_STRING.isEmpty()) {
                         HandleLog.title("Descriptografando mensagem.");
-                        String conteudoDecripted = Cryptography.decryptString(request.getConteudo().toString(), Configs.CRIPTOGRAFY_KEY_STRING);
-                        request.setConteudo(conteudoDecripted);
-                        return nextHandler.validate(request);
+                        String conteudoDecripted = Cryptography.decryptString(payload.getConteudo().toString(), Configs.CRIPTOGRAFY_KEY_STRING);
+                        payload.setConteudo(conteudoDecripted);
+                        return nextHandler.validate(payload);
                 }
                 
                 HandleLog.title("Chave de criptografia nao configurada.");
 
                 if (nextHandler != null) {
-                    return nextHandler.validate(request);
+                    return nextHandler.validate(payload);
                 }
             
-            return request;
+            return payload;
         }
 }

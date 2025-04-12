@@ -19,27 +19,27 @@ public class HandleRegisterCampo implements IHandleChain {
         }
     
         @Override
-        public ICommunication validate(ICommunication request) {
+        public ICommunication validate(ICommunication payload) {
 
                 try{
-                    if (request.getEvento() == EventsEnum.CampoLiberadoParaRegistro) {
-                        HandleLog.title("Campo de batalha encontrado "+request.getCorrelationId());  
+                    if (payload.getEvento() == EventsEnum.CampoLiberadoParaRegistro) {
+                        HandleLog.title("Campo de batalha encontrado "+payload.getCorrelationId());  
     
-                        Message message  = DirectorMessage.createRegisterMessage(request.getCorrelationId());
+                        Message message  = DirectorMessage.createRegisterMessage(payload.getCorrelationId());
                         
                         ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
     
                         ServiceBus service = ServiceBus.getInstance();
                         service.sendMessage(messageService);
     
-                        return request;
+                        return payload;
                     }
     
-                    if(request.getEvento() == EventsEnum.RegistrarNovamente) {
-                        HandleLog.title("Novo Registro "+request.getCorrelationId());  
+                    if(payload.getEvento() == EventsEnum.RegistrarNovamente) {
+                        HandleLog.title("Novo Registro "+payload.getCorrelationId());  
     
     
-                        Message message  = DirectorMessage.createRegisterMessage( request.getCorrelationId());
+                        Message message  = DirectorMessage.createRegisterMessage( payload.getCorrelationId());
                         
                         ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
     
@@ -49,13 +49,13 @@ public class HandleRegisterCampo implements IHandleChain {
                     }
     
                     if (nextHandler != null) {
-                        return nextHandler.validate(request);
+                        return nextHandler.validate(payload);
                     }
                     
                 } catch (Exception e) {
                     HandleLog.title("Error in HandleRegisterCampo: " + e.getMessage());
                 }
             
-            return request;
+            return payload;
         }
 }

@@ -26,12 +26,12 @@ public class HandleAttackEnemy implements IHandleChain {
         }
     
         @Override
-        public ICommunication validate(ICommunication request) {
+        public ICommunication validate(ICommunication payload) {
 
-            if (request.getEvento() == EventsEnum.LiberacaoAtaque && request.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
+            if (payload.getEvento() == EventsEnum.LiberacaoAtaque && payload.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
                 HandleLog.title("Atack: Processing message");  
 
-                String correlationId = request.getCorrelationId();
+                String correlationId = payload.getCorrelationId();
                 // Calibrar para não atirar no próprio barco
                 String message = shoot(correlationId);
                 ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
@@ -41,9 +41,9 @@ public class HandleAttackEnemy implements IHandleChain {
             }
 
             if (nextHandler != null) {
-                return nextHandler.validate(request);
+                return nextHandler.validate(payload);
             }
-            return request;
+            return payload;
         }
 
         private String shoot(String correlationId) {
@@ -56,7 +56,6 @@ public class HandleAttackEnemy implements IHandleChain {
                 } else if (shipModel.getShootLevel() == 2) {
                     x_y_try = thirdLevelShoot();
                 }
-                // System.out.println("Atack: Random shot at coordinates: (" + x_y_try.get(0) + ", " + x_y_try.get(1) + ")");
                 HandleLog.title("Atack: Random shot at coordinates: (" + x_y_try.get(0) + ", " + x_y_try.get(1) + ")");
                 Message message = DirectorMessage.createAttackMessage(correlationId, x_y_try.get(0).byteValue(), x_y_try.get(1).byteValue());
                 return message.toString();
