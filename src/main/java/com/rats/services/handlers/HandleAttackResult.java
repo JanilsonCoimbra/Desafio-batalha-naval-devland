@@ -34,8 +34,7 @@ public class HandleAttackResult implements IHandleChain {
                     
                     AttackResultContent messageReceived = objectMapper.readValue(payload.getConteudo().toString(), AttackResultContent.class);
 
-                    if(messageReceived.getDistanciaAproximada() == 5){
-                        System.out.println("Acertou a posição e o nível de tiro é 0: ");
+                    if(messageReceived.getDistanciaAproximada() == 5 && shipModel.getShootLevel() == 0){
                         messageReceived.getPosicao().getX();
                         messageReceived.getPosicao().getY();
                         Configs.FIRST_SET_SHOOT_FIVE = new ArrayList<>();
@@ -44,11 +43,9 @@ public class HandleAttackResult implements IHandleChain {
 
                         if (nextHandler != null) {
                             return nextHandler.validate(payload);
-            
                         }
                     }
-
-                    if ((messageReceived.getDistanciaAproximada() >= 1 && Math.floor(messageReceived.getDistanciaAproximada()) != 5  && messageReceived.getDistanciaAproximada() <= 7) && shipModel.getShootLevel() == 0) {
+                    if (messageReceived.getDistanciaAproximada() >= 1 && messageReceived.getDistanciaAproximada() != 5  && messageReceived.getDistanciaAproximada() <= 7 && shipModel.getShootLevel() == 0) {
                         HandleLog.title("SET SHOOT LEVEL 1: ");
                         shipModel.setShootLevel(1);
                         shipModel.distanceApproximate = String.valueOf(messageReceived.getDistanciaAproximada());
@@ -93,22 +90,15 @@ public class HandleAttackResult implements IHandleChain {
                                 wrappedPositions.add(new long[] {x + 2, y});
                                 wrappedPositions.add(new long[] {x, y + 2});
                                 break;
-                            case 55:
+                            default:
                                 wrappedPositions.add(new long[] {x - 1, y});
                                 wrappedPositions.add(new long[] {x, y - 1});
                                 wrappedPositions.add(new long[] {x + 1, y});
                                 wrappedPositions.add(new long[] {x, y + 1});
-                                break;
-                            default:
                                 wrappedPositions.add(new long[] {x - 2, y});
                                 wrappedPositions.add(new long[] {x, y - 2});
                                 wrappedPositions.add(new long[] {x + 2, y});
                                 wrappedPositions.add(new long[] {x, y + 2});
-                                wrappedPositions.add(new long[] {x - 1, y});
-                                wrappedPositions.add(new long[] {x, y - 1});
-                                wrappedPositions.add(new long[] {x + 1, y});
-                                wrappedPositions.add(new long[] {x, y + 1});
-                                HandleLog.title("Nenhum cenário correspondente encontrado para a pontuação: " + Configs.enemyScore);
                                 break;
                         }
 

@@ -9,7 +9,6 @@ import com.rats.models.Message;
 import com.rats.services.ServiceBus;
 
 public class HandleRegisterCampo implements IHandleChain {
-        // TODO: put SHOOT_LEVEL = 0
         private IHandleChain nextHandler;
     
         @Override

@@ -29,7 +29,7 @@ public class CalculadoraDeBatalha {
     }
 
     public static boolean  isValidPosition(long x, long y) {
-        return (x >= 0 && x < 100 && y >= 0 && y < 30);
+        return (x >= 1 && x <= 100 && y >= 1 && y <= 30);
     }
 
     public static boolean isPossitionMyShip(byte AttackX, byte AttackY, byte positionCentralX, byte positionCentralY, String orientation) {

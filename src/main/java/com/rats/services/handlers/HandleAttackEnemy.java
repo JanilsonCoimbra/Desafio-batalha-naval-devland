@@ -32,7 +32,6 @@ public class HandleAttackEnemy implements IHandleChain {
                 HandleLog.title("Atack: Processing message");  
 
                 String correlationId = payload.getCorrelationId();
-                // Calibrar para não atirar no próprio barco
                 String message = shoot(correlationId);
                 ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
 
@@ -48,16 +47,6 @@ public class HandleAttackEnemy implements IHandleChain {
 
         private String shoot(String correlationId) {
                 List<Integer> x_y_try = Arrays.asList(1, 1);
-
-                if (Configs.FIRST_SET_SHOOT_FIVE != null && !Configs.FIRST_SET_SHOOT_FIVE.isEmpty()) {
-                    x_y_try = Configs.FIRST_SET_SHOOT_FIVE;
-                    Configs.FIRST_SET_SHOOT_FIVE = null;
-                    HandleLog.title("Atack: enter if level five " + x_y_try.toString());
-
-                    Message message = DirectorMessage.createAttackMessage(correlationId, x_y_try.get(0).byteValue(), x_y_try.get(1).byteValue());
-                    return message.toString();
-                }
-    
                 if (shipModel.getShootLevel() == 0) {
                     x_y_try = firstLevelShoot();
                 } else if (shipModel.getShootLevel() == 1) {
@@ -71,9 +60,19 @@ public class HandleAttackEnemy implements IHandleChain {
         }
 
         private List<Integer> firstLevelShoot() {
+            Integer xAtack;
+            Integer yAtack;
+            
             try {
-                Integer xAtack = Configs.FIRST_SET_SHOOT.get(0).get(0);
-                Integer yAtack = Configs.FIRST_SET_SHOOT.get(0).get(1);
+                if (Configs.FIRST_SET_SHOOT_FIVE != null && !Configs.FIRST_SET_SHOOT_FIVE.isEmpty()) {
+                    xAtack = Configs.FIRST_SET_SHOOT_FIVE.get(0).intValue();
+                    yAtack = Configs.FIRST_SET_SHOOT_FIVE.get(1).intValue();
+                    Configs.FIRST_SET_SHOOT_FIVE.remove(0);
+
+                    return Arrays.asList(xAtack, yAtack);
+                }
+                xAtack = Configs.FIRST_SET_SHOOT.get(0).get(0);
+                yAtack = Configs.FIRST_SET_SHOOT.get(0).get(1);
                 Configs.FIRST_SET_SHOOT.remove(0);
                 return Arrays.asList(xAtack, yAtack);
             } catch (Exception e) {
