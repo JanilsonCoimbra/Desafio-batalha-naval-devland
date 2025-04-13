@@ -11,9 +11,9 @@ public class Configs {
     public static final String TOPIC_NAME = "desafio.batalha_naval.casaratolandia";
     public static final String SUBSCRIPTION_NAME = "rato_do_mar";
 
-    public static final String POSITION_Y = "20";
-    public static final String POSITION_X = "20";
-    public static final String ORIENTATION = ShipOrientation.HORIZONTAL.getOrientation();
+    public static final String POSITION_Y = "3";
+    public static final String POSITION_X = "100";
+    public static final String ORIENTATION = ShipOrientation.VERTICAL.getOrientation();
     public static final String CRIPTOGRAFY_KEY_STRING;
     public static final boolean ACTIVATE_LOG = true;
     
@@ -51,6 +51,7 @@ public class Configs {
     public static List<Integer> FIRST_SET_SHOOT_FIVE;
     public static List<List<Integer>> SECOND_SET_SHOOT;
     public static List<List<Integer>> THIRD_SET_SHOOT;
+    public static Integer enemyScore;
 
     private Configs() {}
 }

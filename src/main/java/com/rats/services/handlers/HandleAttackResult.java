@@ -1,4 +1,5 @@
 package com.rats.services.handlers;
+import java.io.ObjectInputFilter.Config;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,22 +13,21 @@ import com.rats.models.AttackResultContent;
 import com.rats.models.ShipModel;
 import com.rats.validations.CalculadoraDeBatalha;
 public class HandleAttackResult implements IHandleChain {
-
+    
     private IHandleChain nextHandler;
     ShipModel shipModel = ShipModel.getShipModel();
-
-
-        @Override
-        public IHandleChain next(IHandleChain nextHandler) {
-            this.nextHandler = nextHandler;
-            return this.nextHandler;
-        }
     
-        @Override
-        public ICommunication validate(ICommunication payload) {
-
-            if (payload.getEvento() == EventsEnum.ResultadoAtaqueEfetuado && payload.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
-                
+    
+    @Override
+    public IHandleChain next(IHandleChain nextHandler) {
+        this.nextHandler = nextHandler;
+        return this.nextHandler;
+    }
+    
+    @Override
+    public ICommunication validate(ICommunication payload) {
+        
+        if (payload.getEvento() == EventsEnum.ResultadoAtaqueEfetuado && payload.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
                 try {
                     ObjectMapper objectMapper = new ObjectMapper();
                     objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
@@ -68,6 +68,15 @@ public class HandleAttackResult implements IHandleChain {
                     
                     if (messageReceived.isAcertou() && (shipModel.getShootLevel() == 1 || shipModel.getShootLevel() == 0)) {
                         shipModel.setShootLevel(2);
+
+                        payload.getPontuacaoNavios().forEach((key, value) -> {
+                            System.out.println("Naviooo : " + key + " - Pontuação: " + value);
+                            //pegar primeira ocorrencia que não é rato_do_mar
+                            if(!key.equals(Configs.SUBSCRIPTION_NAME)) {
+                                Configs.enemyScore = value;
+                            }
+                        });
+
                         System.out.println("Acertou a posição e o nível de tiro é 1 ou 0: ");
                         HandleLog.title("Acertou: " + messageReceived.isAcertou());
                         
@@ -76,15 +85,33 @@ public class HandleAttackResult implements IHandleChain {
                         long x = messageReceived.getPosicao().getX();
                         long y = messageReceived.getPosicao().getY();
 
-                        wrappedPositions.add(new long[] {x - 2, y});
-                        wrappedPositions.add(new long[] {x, y - 2});
-                        wrappedPositions.add(new long[] {x + 2, y});
-                        wrappedPositions.add(new long[] {x, y + 2});
+                        // Melhorar lógica para checar outros cenários com base nas pontuações
+                        switch (Configs.enemyScore) {
+                            case 85:
+                                wrappedPositions.add(new long[] {x - 2, y});
+                                wrappedPositions.add(new long[] {x, y - 2});
+                                wrappedPositions.add(new long[] {x + 2, y});
+                                wrappedPositions.add(new long[] {x, y + 2});
+                                break;
+                            case 55:
+                                wrappedPositions.add(new long[] {x - 1, y});
+                                wrappedPositions.add(new long[] {x, y - 1});
+                                wrappedPositions.add(new long[] {x + 1, y});
+                                wrappedPositions.add(new long[] {x, y + 1});
+                                break;
+                            default:
+                                wrappedPositions.add(new long[] {x - 2, y});
+                                wrappedPositions.add(new long[] {x, y - 2});
+                                wrappedPositions.add(new long[] {x + 2, y});
+                                wrappedPositions.add(new long[] {x, y + 2});
+                                wrappedPositions.add(new long[] {x - 1, y});
+                                wrappedPositions.add(new long[] {x, y - 1});
+                                wrappedPositions.add(new long[] {x + 1, y});
+                                wrappedPositions.add(new long[] {x, y + 1});
+                                HandleLog.title("Nenhum cenário correspondente encontrado para a pontuação: " + Configs.enemyScore);
+                                break;
+                        }
 
-                        wrappedPositions.add(new long[] {x - 1, y});
-                        wrappedPositions.add(new long[] {x, y - 1});
-                        wrappedPositions.add(new long[] {x + 1, y});
-                        wrappedPositions.add(new long[] {x, y + 1});
                         Configs.THIRD_SET_SHOOT = new ArrayList<>();
                         wrappedPositions.forEach(item -> {
                             System.out.println("Posicoes possiveis level 2: "+Arrays.toString(item));
