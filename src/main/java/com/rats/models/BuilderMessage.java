@@ -2,7 +2,9 @@ package com.rats.models;
 
 import java.util.Map;
 
+import com.rats.configs.Configs;
 import com.rats.interfaces.EventsEnum;
+import com.rats.services.Cryptography;
 
 public class BuilderMessage {
     
@@ -35,7 +37,12 @@ public class BuilderMessage {
     }
 
     public BuilderMessage setConteudo(String conteudo) {
-        message.setConteudo(conteudo);
+        try {
+            String messageEncrypted = Cryptography.encryptString(conteudo, Configs.CRIPTOGRAFY_KEY_STRING);
+            message.setConteudo(messageEncrypted);
+        } catch (Exception e) {
+            System.out.println("Error in setConteudo: " + e.getMessage());
+        }
         return this;
     }
 
