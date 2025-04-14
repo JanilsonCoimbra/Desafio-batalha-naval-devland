@@ -1,17 +1,16 @@
 package com.rats.services.handlers;
 import java.util.Arrays;
 import java.util.List;
-
-import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.rats.configs.Configs;
 import com.rats.configs.HandleLog;
 import com.rats.interfaces.EventsEnum;
 import com.rats.interfaces.ICommunication;
 import com.rats.interfaces.IHandleChain;
-import com.rats.models.DirectorMessage;
-import com.rats.models.Message;
+import com.rats.interfaces.ShotState;
 import com.rats.models.ShipModel;
-import com.rats.services.ServiceBus;
+import com.rats.services.states.ShotLevelOne;
+import com.rats.services.states.ShotLevelThird;
+import com.rats.services.states.ShotLevelTwo;
 
 public class HandleAttackEnemy implements IHandleChain {
 
@@ -31,11 +30,8 @@ public class HandleAttackEnemy implements IHandleChain {
             if (payload.getEvento() == EventsEnum.LiberacaoAtaque && payload.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
 
                 String correlationId = payload.getCorrelationId();
-                String message = shoot(correlationId);
-                ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
-
-                ServiceBus service = ServiceBus.getInstance();
-                service.sendMessage(messageService);
+                shoot(correlationId);
+                
             }
 
             if (nextHandler != null) {
@@ -44,18 +40,18 @@ public class HandleAttackEnemy implements IHandleChain {
             return payload;
         }
 
-        private String shoot(String correlationId) {
-                List<Integer> x_y_try = Arrays.asList(1, 1);
+        private void shoot(String correlationId) {
+                ShotState shotLevelOne = new ShotLevelOne();
+                ShotState shotLevelTwo = new ShotLevelTwo();
+                ShotState shotLevelThree = new ShotLevelThird();
+                
                 if (shipModel.getShootLevel() == 0) {
-                    x_y_try = firstLevelShoot();
+                    shotLevelOne.handleShot(correlationId);
                 } else if (shipModel.getShootLevel() == 1) {
-                    x_y_try = secondLevelShoot();
+                    shotLevelTwo.handleShot(correlationId);
                 } else if (shipModel.getShootLevel() == 2) {
-                    x_y_try = thirdLevelShoot();
+                    shotLevelThree.handleShot(correlationId);
                 }
-                HandleLog.title("Atack: Random shot at coordinates: (" + x_y_try.get(0) + ", " + x_y_try.get(1) + ")");
-                Message message = DirectorMessage.createAttackMessage(correlationId, x_y_try.get(0).byteValue(), x_y_try.get(1).byteValue());
-                return message.toString();
         }
 
         private List<Integer> firstLevelShoot() {

@@ -126,7 +126,7 @@ public class ServiceBus {
 
 	public static void close() {
 		if (processorClient != null) {
-			processorClient.stop(); // Para o processamento de mensagens
+			processorClient.stop();
 			HandleLog.title("Stopping message processor...");
 		}
 		if (serviceBuilder != null) {

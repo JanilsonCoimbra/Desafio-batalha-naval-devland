@@ -68,7 +68,6 @@ public class HandleAttackResult implements IHandleChain {
 
                         payload.getPontuacaoNavios().forEach((key, value) -> {
                             System.out.println("Naviooo : " + key + " - Pontuação: " + value);
-                            //pegar primeira ocorrencia que não é rato_do_mar
                             if(!key.equals(Configs.SUBSCRIPTION_NAME)) {
                                 Configs.enemyScore = value;
                             }
@@ -82,7 +81,6 @@ public class HandleAttackResult implements IHandleChain {
                         long x = messageReceived.getPosicao().getX();
                         long y = messageReceived.getPosicao().getY();
 
-                        // Melhorar lógica para checar outros cenários com base nas pontuações
                         switch (Configs.enemyScore) {
                             case 85:
                                 wrappedPositions.add(new long[] {x - 2, y});
@@ -107,8 +105,6 @@ public class HandleAttackResult implements IHandleChain {
                             System.out.println("Posicoes possiveis level 2: "+Arrays.toString(item));
                             Configs.THIRD_SET_SHOOT.add(Arrays.asList((int)item[0], (int)item[1]));
                         }); 
-                        // wrappedPositions.forEach(
-                        //     item -> System.out.println("Posicoes possiveis: "+Arrays.toString(item)));
                     }
                 } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
                     throw new RuntimeException("Error processing JSON", e);
