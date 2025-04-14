@@ -10,16 +10,48 @@ public class Configs {
     public static final String CONNECTION_STRING = "Endpoint=sb://servdevland.servicebus.windows.net/;SharedAccessKeyName=casaratolandia;SharedAccessKey=MUt2vhyqM/TwWxhad+DzI2L1wjyifG3wP+ASbPh+dYc=";
     public static final String TOPIC_NAME = "desafio.batalha_naval.casaratolandia";
     public static final String SUBSCRIPTION_NAME = "rato_do_mar";
+    public static final List<List<Object>> SHIP_LIST_POSITION = new ArrayList<>();
 
-    public static final String POSITION_Y = "3";
-    public static final String POSITION_X = "100";
-    public static final String ORIENTATION = ShipOrientation.VERTICAL.getOrientation();
+    public static String POSITION_Y;
+    public static String POSITION_X;
+    public static String ORIENTATION;
     public static final String CRIPTOGRAFY_KEY_STRING;
     public static final boolean ACTIVATE_LOG = true;
     
     public static final List<List<Integer>> FIRST_SET_SHOOT = new ArrayList<>();
     static {
         CRIPTOGRAFY_KEY_STRING = "";
+
+        SHIP_LIST_POSITION.add(List.of(15, 1, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(15, 16, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(15, 30, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(13, 15, ShipOrientation.VERTICAL.getOrientation()));
+
+        SHIP_LIST_POSITION.add(List.of(30, 1, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(30, 16, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(30, 30, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(28, 15, ShipOrientation.VERTICAL.getOrientation()));
+
+        SHIP_LIST_POSITION.add(List.of(45, 1, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(45, 16, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(45, 30, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(43, 15, ShipOrientation.VERTICAL.getOrientation()));
+
+        SHIP_LIST_POSITION.add(List.of(60, 1, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(60, 16, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(60, 30, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(58, 15, ShipOrientation.VERTICAL.getOrientation()));
+
+        SHIP_LIST_POSITION.add(List.of(75, 1, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(75, 16, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(75, 30, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(73, 15, ShipOrientation.VERTICAL.getOrientation()));
+
+        SHIP_LIST_POSITION.add(List.of(90, 1, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(90, 16, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(90, 30, ShipOrientation.HORIZONTAL.getOrientation()));
+        SHIP_LIST_POSITION.add(List.of(88, 15, ShipOrientation.VERTICAL.getOrientation()));
+
         FIRST_SET_SHOOT.add(Arrays.asList(94, 24));
         FIRST_SET_SHOOT.add(Arrays.asList(83, 24));
         FIRST_SET_SHOOT.add(Arrays.asList(72, 24));

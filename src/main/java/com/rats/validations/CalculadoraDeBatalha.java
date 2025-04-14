@@ -2,6 +2,7 @@ package com.rats.validations;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.rats.configs.Configs;
 public class CalculadoraDeBatalha {
 
     public static List<long[]> calcularPosicoesPossiveis(long x, long y, double raio) {
@@ -54,6 +55,16 @@ public class CalculadoraDeBatalha {
             }
         }
         return false; 
+    }
+
+    public static List<Object> generateInitialPositionShip(List<List<Object>> list) {
+        if (list == null || list.isEmpty()) {
+            return new ArrayList<>();
+        }
+        int randomIndex = (int) (Math.random() * list.size());
+
+        Configs.SHIP_LIST_POSITION.remove(randomIndex);
+        return list.get(randomIndex);
     }
 
     private CalculadoraDeBatalha() {

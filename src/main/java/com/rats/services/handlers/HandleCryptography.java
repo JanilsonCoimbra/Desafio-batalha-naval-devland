@@ -25,8 +25,6 @@ public class HandleCryptography implements IHandleChain {
                         return nextHandler.validate(payload);
                 }
                 
-                HandleLog.title("Chave de criptografia nao configurada.");
-
                 if (nextHandler != null) {
                     return nextHandler.validate(payload);
                 }

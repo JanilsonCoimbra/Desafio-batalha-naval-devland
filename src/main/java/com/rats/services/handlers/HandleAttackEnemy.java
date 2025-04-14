@@ -29,7 +29,6 @@ public class HandleAttackEnemy implements IHandleChain {
         public ICommunication validate(ICommunication payload) {
 
             if (payload.getEvento() == EventsEnum.LiberacaoAtaque && payload.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
-                HandleLog.title("Atack: Processing message");  
 
                 String correlationId = payload.getCorrelationId();
                 String message = shoot(correlationId);
@@ -115,9 +114,6 @@ public class HandleAttackEnemy implements IHandleChain {
                 }
                 Integer xAttack = xAttackLong.intValue();
                 Integer yAttack = yAttackLong.intValue();
-
-                System.out.println("Atack: Third level shoot: " + xAttack + ", " + yAttack);
-                
 
                 Configs.THIRD_SET_SHOOT.remove(0);
                 if (Configs.THIRD_SET_SHOOT.isEmpty()) {

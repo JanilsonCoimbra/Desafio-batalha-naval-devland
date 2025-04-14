@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import com.rats.configs.Configs;
 import com.rats.interfaces.ShipOrientation;
 @SpringBootTest
 class CalculadoraDeBatalhaTest {
@@ -69,7 +71,16 @@ class CalculadoraDeBatalhaTest {
         assertTrue(result);
     }
 
-    // @Test
+    @Test 
+    void generateInitialPositionShip() {
+        List<List<Object>> shipPositions = Configs.SHIP_LIST_POSITION;
+        byte positionCentralX = (byte) shipPositions.size();
+
+        List<Object> result = CalculadoraDeBatalha.generateInitialPositionShip(shipPositions);
+        assertEquals(3, result.size());
+        assertTrue(Configs.SHIP_LIST_POSITION.size() < positionCentralX);
+    } 
+
 
     
 }

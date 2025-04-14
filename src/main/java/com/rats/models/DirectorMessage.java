@@ -11,6 +11,11 @@ public class DirectorMessage {
     }
     
     public static Message createRegisterMessage(String correlationId) {
+        boolean isValidPosition = CalculadoraDeBatalha.isValidPosition(Byte.parseByte(Configs.POSITION_X), Byte.parseByte(Configs.POSITION_Y));
+        if (!isValidPosition) {
+            Logger.getLogger(DirectorMessage.class.getName()).warning("Posicao invalida, por favor escolha outra posicao.");
+            return null;
+        }
         BuilderMessage builderMessage = new BuilderMessage();
         return builderMessage 
                 .setCorrelationId(correlationId)
