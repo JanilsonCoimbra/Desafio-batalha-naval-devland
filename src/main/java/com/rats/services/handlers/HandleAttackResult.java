@@ -103,7 +103,8 @@ public class HandleAttackResult implements IHandleChain {
                         Configs.THIRD_SET_SHOOT = new ArrayList<>();
                         wrappedPositions.forEach(item -> {
                             System.out.println("Posicoes possiveis level 2: "+Arrays.toString(item));
-                            Configs.THIRD_SET_SHOOT.add(Arrays.asList((int)item[0], (int)item[1]));
+                            if((int)item[0] >= 1 && (int)item[0] <= 100 && (int)item[1] >= 1 && (int)item[1] <= 30) 
+                                Configs.THIRD_SET_SHOOT.add(Arrays.asList((int)item[0], (int)item[1]));
                         }); 
                     }
                 } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
