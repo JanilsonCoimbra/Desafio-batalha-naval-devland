@@ -18,6 +18,9 @@ public class Configs {
     public static final String CRIPTOGRAFY_KEY_STRING;
     public static final boolean ACTIVATE_LOG = true;
     
+    public static Integer POSITION_X_RED_SHOOT;
+    public static Integer POSITION_Y_RED_SHOOT;
+
     public static final List<List<Integer>> FIRST_SET_SHOOT = new ArrayList<>();
     static {
         CRIPTOGRAFY_KEY_STRING = "crta55898a4r4136fbge2ef6315a1268";

@@ -51,7 +51,9 @@ public class HandleAttackResult implements IHandleChain {
                         shipModel.distanceApproximate = String.valueOf(messageReceived.getDistanciaAproximada());
 
                         List<long[]> wrappedPositions = CalculadoraDeBatalha.calcularPosicoesPossiveis(messageReceived.getPosicao().getX(), messageReceived.getPosicao().getY(), messageReceived.getDistanciaAproximada());
-
+                        Configs.POSITION_X_RED_SHOOT = Math.toIntExact(messageReceived.getPosicao().getX());
+                        Configs.POSITION_Y_RED_SHOOT = Math.toIntExact(messageReceived.getPosicao().getY());
+                    
                         Configs.SECOND_SET_SHOOT = new ArrayList<>();
                         wrappedPositions.forEach(item -> {
                             System.out.println("Posicoes possiveis level 1: "+Arrays.toString(item));
@@ -100,6 +102,30 @@ public class HandleAttackResult implements IHandleChain {
                                 break;
                         }
 
+                        wrappedPositions.sort((a, b) -> {
+                            int result = 0;
+                        
+                            // Comparação para eixo X
+                            if (Configs.POSITION_X_RED_SHOOT > x) {
+                                if (a[0] < x && b[0] >= x) return -1;
+                                if (a[0] >= x && b[0] < x) return 1;
+                            } else if (Configs.POSITION_X_RED_SHOOT < x) {
+                                if (a[0] > x && b[0] <= x) return -1;
+                                if (a[0] <= x && b[0] > x) return 1;
+                            }
+                        
+                            // Comparação para eixo Y
+                            if (Configs.POSITION_Y_RED_SHOOT > y) {
+                                if (a[1] < y && b[1] >= y) return -1;
+                                if (a[1] >= y && b[1] < y) return 1;
+                            } else if (Configs.POSITION_Y_RED_SHOOT < y) {
+                                if (a[1] > y && b[1] <= y) return -1;
+                                if (a[1] <= y && b[1] > y) return 1;
+                            }
+                        
+                            return result;
+                        });
+                        
                         Configs.THIRD_SET_SHOOT = new ArrayList<>();
                         wrappedPositions.forEach(item -> {
                             System.out.println("Posicoes possiveis level 2: "+Arrays.toString(item));
