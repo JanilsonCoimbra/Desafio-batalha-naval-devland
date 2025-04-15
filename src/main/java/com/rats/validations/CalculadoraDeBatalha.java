@@ -17,9 +17,7 @@ public class CalculadoraDeBatalha {
                 
                 double distanciaTeste = Math.round(Math.sqrt((double) (i * i + j * j)) * 100.0) / 100.0;
                 double raioArredondado = Math.round(raio * 100.0) / 100.0;
-                // Verificar se a posição está dentro dos limites da matriz
-                if (novoX >= 0 && novoX < 100 && novoY >= 0 && novoY < 30) {
-                    // Verificar se a posição está dentro do raio
+                if (novoX >= 1 && novoX <= 100 && novoY >= 1 && novoY <= 30) {
                     if (distanciaTeste == raioArredondado) {
                         posicoes.add(new long[]{novoX, novoY});
                     }
