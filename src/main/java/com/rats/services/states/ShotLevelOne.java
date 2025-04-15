@@ -24,12 +24,15 @@ public class ShotLevelOne extends ShotState {
                 }
 
                 if (Configs.FIRST_SET_SHOOT != null && !Configs.FIRST_SET_SHOOT.isEmpty()) {
-                    if (Configs.FIRST_SET_SHOOT.get(0).size() < 2 || Configs.FIRST_SET_SHOOT.get(0).get(0) == null || Configs.FIRST_SET_SHOOT.get(0).get(1) == null) {
+                    Integer size = Configs.FIRST_SET_SHOOT.size();
+                    int randomIndex = (int) (Math.random() * size);
+
+                    if (Configs.FIRST_SET_SHOOT.get(randomIndex).size() < 2 || Configs.FIRST_SET_SHOOT.get(randomIndex).get(0) == null || Configs.FIRST_SET_SHOOT.get(randomIndex).get(1) == null) {
                         shotRandon(correlationId);
                     }
-                    xAtack = Configs.FIRST_SET_SHOOT.get(0).get(0);
-                    yAtack = Configs.FIRST_SET_SHOOT.get(0).get(1);
-                    Configs.FIRST_SET_SHOOT.remove(0);
+                    xAtack = Configs.FIRST_SET_SHOOT.get(randomIndex).get(0);
+                    yAtack = Configs.FIRST_SET_SHOOT.get(randomIndex).get(1);
+                    Configs.FIRST_SET_SHOOT.remove(randomIndex);
                     sendMessageShot(xAtack, yAtack, correlationId);
                     HandleLog.title("First level shot executed: " + xAtack + ", " + yAtack);
                 } else {

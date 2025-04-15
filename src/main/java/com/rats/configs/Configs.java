@@ -52,33 +52,34 @@ public class Configs {
         SHIP_LIST_POSITION.add(List.of(90, 30, ShipOrientation.HORIZONTAL.getOrientation()));
         SHIP_LIST_POSITION.add(List.of(88, 15, ShipOrientation.VERTICAL.getOrientation()));
 
-        FIRST_SET_SHOOT.add(Arrays.asList(94, 24));
-        FIRST_SET_SHOOT.add(Arrays.asList(83, 24));
-        FIRST_SET_SHOOT.add(Arrays.asList(72, 24));
-        FIRST_SET_SHOOT.add(Arrays.asList(61, 24));
-        FIRST_SET_SHOOT.add(Arrays.asList(50, 24));
-        FIRST_SET_SHOOT.add(Arrays.asList(39, 24));
-        FIRST_SET_SHOOT.add(Arrays.asList(28, 24));
-        FIRST_SET_SHOOT.add(Arrays.asList(17, 24));
-        FIRST_SET_SHOOT.add(Arrays.asList(6, 24));
-        FIRST_SET_SHOOT.add(Arrays.asList(94, 11));
-        FIRST_SET_SHOOT.add(Arrays.asList(83, 11));
-        FIRST_SET_SHOOT.add(Arrays.asList(72, 11));
-        FIRST_SET_SHOOT.add(Arrays.asList(61, 11));
-        FIRST_SET_SHOOT.add(Arrays.asList(50, 11));
-        FIRST_SET_SHOOT.add(Arrays.asList(39, 11));
-        FIRST_SET_SHOOT.add(Arrays.asList(28, 11));
-        FIRST_SET_SHOOT.add(Arrays.asList(17, 11));
-        FIRST_SET_SHOOT.add(Arrays.asList(6, 11));
-        FIRST_SET_SHOOT.add(Arrays.asList(94, 2));
-        FIRST_SET_SHOOT.add(Arrays.asList(83, 2));
-        FIRST_SET_SHOOT.add(Arrays.asList(72, 2));
-        FIRST_SET_SHOOT.add(Arrays.asList(61, 2));
-        FIRST_SET_SHOOT.add(Arrays.asList(50, 2));
-        FIRST_SET_SHOOT.add(Arrays.asList(39, 2));
-        FIRST_SET_SHOOT.add(Arrays.asList(28, 2));
-        FIRST_SET_SHOOT.add(Arrays.asList(17, 2));
-        FIRST_SET_SHOOT.add(Arrays.asList(6, 2));
+        FIRST_SET_SHOOT.add(Arrays.asList(11, 4));
+        FIRST_SET_SHOOT.add(Arrays.asList(28, 4));
+        FIRST_SET_SHOOT.add(Arrays.asList(45, 4));
+        FIRST_SET_SHOOT.add(Arrays.asList(62, 4));
+        FIRST_SET_SHOOT.add(Arrays.asList(79, 4));
+        FIRST_SET_SHOOT.add(Arrays.asList(96, 4));
+
+        FIRST_SET_SHOOT.add(Arrays.asList(4, 11));
+        FIRST_SET_SHOOT.add(Arrays.asList(21, 9));
+        FIRST_SET_SHOOT.add(Arrays.asList(38, 9));
+        FIRST_SET_SHOOT.add(Arrays.asList(55, 9));
+        FIRST_SET_SHOOT.add(Arrays.asList(72, 9));
+        FIRST_SET_SHOOT.add(Arrays.asList(89, 9));
+
+        FIRST_SET_SHOOT.add(Arrays.asList(13, 20));
+        FIRST_SET_SHOOT.add(Arrays.asList(30, 20));
+        FIRST_SET_SHOOT.add(Arrays.asList(47, 20));
+        FIRST_SET_SHOOT.add(Arrays.asList(64, 20));
+        FIRST_SET_SHOOT.add(Arrays.asList(81, 20));
+        FIRST_SET_SHOOT.add(Arrays.asList(98, 20));
+
+        FIRST_SET_SHOOT.add(Arrays.asList(5, 27));
+        FIRST_SET_SHOOT.add(Arrays.asList(22, 27));
+        FIRST_SET_SHOOT.add(Arrays.asList(39, 27));
+        FIRST_SET_SHOOT.add(Arrays.asList(56, 27));
+        FIRST_SET_SHOOT.add(Arrays.asList(73, 27));
+        FIRST_SET_SHOOT.add(Arrays.asList(90, 27));
+
     }
     public static List<Integer> FIRST_SET_SHOOT_FIVE;
     public static List<List<Integer>> SECOND_SET_SHOOT;
