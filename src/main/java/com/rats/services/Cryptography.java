@@ -40,5 +40,5 @@ public class Cryptography {
         } catch (Exception e) {
             return cipherText;
         }
-    }
+    } 
 }

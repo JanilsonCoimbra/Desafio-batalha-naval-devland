@@ -17,17 +17,19 @@ public class HandleCryptography implements IHandleChain {
     
         @Override
         public ICommunication validate(ICommunication payload) {
-            
+            try {
                 if(!Configs.CRIPTOGRAFY_KEY_STRING.isEmpty()) {
-                        HandleLog.title("Descriptografando mensagem.");
                         String conteudoDecripted = Cryptography.decryptString(payload.getConteudo().toString(), Configs.CRIPTOGRAFY_KEY_STRING);
                         payload.setConteudo(conteudoDecripted);
                         return nextHandler.validate(payload);
                 }
-                
-                if (nextHandler != null) {
-                    return nextHandler.validate(payload);
-                }
+            } catch (Exception e) {
+                HandleLog.title("Erro ao descriptografar : " + e.getMessage());
+            }
+            
+            if (nextHandler != null) {
+                return nextHandler.validate(payload);
+            }
             
             return payload;
         }

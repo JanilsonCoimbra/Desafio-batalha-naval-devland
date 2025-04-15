@@ -19,6 +19,7 @@ import com.rats.services.handlers.HandleAttackResult;
 import com.rats.services.handlers.HandleCryptography;
 import com.rats.services.handlers.HandleEndGame;
 import com.rats.services.handlers.HandleRegisterCampo;
+import com.rats.services.handlers.HandleScreen;
 import com.rats.validations.JsonValidate;
 public class ServiceBus {
 
@@ -92,14 +93,14 @@ public class ServiceBus {
 				objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
 
 				Message messageReceived = objectMapper.readValue(message.getBody().toString(), Message.class);
-				
-				HandleLog.title("Message received: " + message.getBody());
 
 				IHandleChain handler = new HandleCryptography();
-				handler.next(new HandleRegisterCampo())
-                        .next(new HandleAttackResult())
-						.next(new HandleAttackEnemy())
-						.next(new HandleEndGame());
+				handler
+				.next(new HandleRegisterCampo())
+				.next(new HandleAttackResult())
+				.next(new HandleAttackEnemy())
+				.next(new HandleScreen())
+				.next(new HandleEndGame());
 				handler.validate(messageReceived);
 
 		    } catch (Exception e) {

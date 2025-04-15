@@ -15,11 +15,10 @@ public abstract class ShotState {
         this.nextState = nextState;
     }
 
-    public abstract void handleShot(String correlationId);
+    public abstract void handleShot(String correlationId) throws Exception;
 
     public void sendMessageShot(int x, int y, String correlationId) {
-        List<Integer> x_y_try = Arrays.asList(1, 1);
-        Message message = DirectorMessage.createAttackMessage(correlationId, x_y_try.get(0).byteValue(), x_y_try.get(1).byteValue());
+        Message message = DirectorMessage.createAttackMessage(correlationId, (byte) x, (byte) y);
         ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
 
         ServiceBus service = ServiceBus.getInstance();

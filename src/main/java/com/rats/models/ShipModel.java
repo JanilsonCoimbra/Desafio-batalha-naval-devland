@@ -1,8 +1,4 @@
 package com.rats.models;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.rats.configs.Configs;
 
 public class ShipModel {
@@ -16,7 +12,6 @@ public class ShipModel {
     public String distanceApproximate;
 
     public Position firstSuccessShootPosition;
-    // Direita = 0, Esquerda = 1, Cima = 2, Baixo = 3
     public int successDiretion;
 
     private ShipModel() {
