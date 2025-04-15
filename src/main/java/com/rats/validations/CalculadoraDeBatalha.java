@@ -67,6 +67,16 @@ public class CalculadoraDeBatalha {
         return list.get(randomIndex);
     }
 
+    public static List<Integer> generetedAtackPossitionRadon() {
+        List<Integer> list = new ArrayList<>();
+        int randomX = (int) (Math.random() * 100) + 1;
+        int randomY = (int) (Math.random() * 30) + 1;
+
+        list.add(randomX);
+        list.add(randomY);
+        return list;  
+    }
+
     private CalculadoraDeBatalha() {
     }
 }

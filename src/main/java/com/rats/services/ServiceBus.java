@@ -100,7 +100,8 @@ public class ServiceBus {
 				.next(new HandleAttackResult())
 				.next(new HandleAttackEnemy())
 				.next(new HandleScreen())
-				.next(new HandleEndGame());
+				.next(new HandleEndGame())
+				;
 				handler.validate(messageReceived);
 
 		    } catch (Exception e) {

@@ -20,7 +20,7 @@ public class Configs {
     
     public static final List<List<Integer>> FIRST_SET_SHOOT = new ArrayList<>();
     static {
-        CRIPTOGRAFY_KEY_STRING = "";
+        CRIPTOGRAFY_KEY_STRING = "crta55898a4r4136fbge2ef6315a1268";
 
         SHIP_LIST_POSITION.add(List.of(15, 1, ShipOrientation.HORIZONTAL.getOrientation()));
         SHIP_LIST_POSITION.add(List.of(15, 16, ShipOrientation.HORIZONTAL.getOrientation()));
