@@ -80,13 +80,39 @@ public class HandleAttackResult implements IHandleChain {
                                 }
                             }
                         }
+                        double distAprox = Math.round(messageReceived.getDistanciaAproximada() * 100) / 100;
                         if (!commonElements.isEmpty()) {
                             Configs.SECOND_SET_SHOOT = commonElements;
                             System.out.println("Elementos em comum encontrados: " + commonElements);
-                        } else {
-                            System.out.println("Nenhum elemento em comum encontrado.");
+                        } else if(
+                            (distAprox == 1.0 ||
+                            distAprox == 2.0 ||
+                            distAprox == 3.0 ||
+                            distAprox == 4.0 ||
+                            distAprox == 5.0 ||
+                            distAprox == 6.0 ||
+                            distAprox == 7.0 ||
+                            distAprox == 1.41 ||
+                            distAprox == 2.83 ||
+                            distAprox == 4.24 ||
+                            distAprox == 5.66) &&
+                            Configs.SECOND_SET_SHOOT.size() > 4
+                        ) {
+                            shipModel.distanceApproximate = String.valueOf(messageReceived.getDistanciaAproximada());
+                            
+                            List<long[]> wrappedPositions = CalculadoraDeBatalha.calcularPosicoesPossiveis(messageReceived.getPosicao().getX(), messageReceived.getPosicao().getY(), messageReceived.getDistanciaAproximada());
+                            Configs.POSITION_X_RED_SHOOT = Math.toIntExact(messageReceived.getPosicao().getX());
+                            Configs.POSITION_Y_RED_SHOOT = Math.toIntExact(messageReceived.getPosicao().getY());
+                    
+                            Configs.SECOND_SET_SHOOT = new ArrayList<>();
+                            wrappedPositions.forEach(item -> {
+                                System.out.println("Posicoes possiveis level 1: "+Arrays.toString(item));
+                                Configs.SECOND_SET_SHOOT.add(Arrays.asList((int)item[0], (int)item[1]));
+                            });
                         }
-
+                        if (nextHandler != null) {
+                            return nextHandler.validate(payload);
+                        }
                     }
 
                     if (messageReceived.getDistanciaAproximada() == 1000 && shipModel.getShootLevel() == 1) {
