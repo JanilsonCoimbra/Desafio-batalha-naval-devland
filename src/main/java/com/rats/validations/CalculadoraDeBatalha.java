@@ -143,6 +143,10 @@ public class CalculadoraDeBatalha {
         return wrappedPositions;
     }
 
+    public static double calcularDistanciaEntrePontos(Integer x1, Integer y1, Integer x2, Integer y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    } 
+
     private CalculadoraDeBatalha() {
     }
 }
