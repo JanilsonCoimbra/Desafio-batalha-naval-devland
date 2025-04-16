@@ -45,7 +45,7 @@ public class HandleAttackResult implements IHandleChain {
                             return nextHandler.validate(payload);
                         }
                     }
-                    if (messageReceived.getDistanciaAproximada() >= 1 && messageReceived.getDistanciaAproximada() != 5  && messageReceived.getDistanciaAproximada() <= 7 && shipModel.getShootLevel() == 0) {
+                    if (messageReceived.getDistanciaAproximada() >= 1 && messageReceived.getDistanciaAproximada() != 5 && messageReceived.getDistanciaAproximada() <= 7 && shipModel.getShootLevel() == 0) {
                         HandleLog.title("SET SHOOT LEVEL 1: ");
                         shipModel.setShootLevel(1);
                         shipModel.distanceApproximate = String.valueOf(messageReceived.getDistanciaAproximada());
@@ -63,7 +63,42 @@ public class HandleAttackResult implements IHandleChain {
                         if (nextHandler != null) {
                             return nextHandler.validate(payload);
                         }
-                    } 
+                    }
+
+                    if (messageReceived.getDistanciaAproximada() >= 1 && messageReceived.getDistanciaAproximada() <= 7 && shipModel.getShootLevel() == 1) {
+                        List<long[]> tempSetShoot = CalculadoraDeBatalha.calcularPosicoesPossiveis(messageReceived.getPosicao().getX(), messageReceived.getPosicao().getY(), messageReceived.getDistanciaAproximada());
+                        List<List<Integer>> tempSetShootList = new ArrayList<>();
+                        tempSetShoot.forEach(item -> {
+                            System.out.println("Posicoes possiveis level 1: "+Arrays.toString(item));
+                            tempSetShootList.add(Arrays.asList((int)item[0], (int)item[1]));
+                        });
+                        List<List<Integer>> commonElements = new ArrayList<>();
+                        for (List<Integer> list1 : Configs.SECOND_SET_SHOOT) {
+                            for (List<Integer> list2 : tempSetShootList) {
+                                if (list1.equals(list2)) {
+                                    commonElements.add(list1);
+                                }
+                            }
+                        }
+                        if (!commonElements.isEmpty()) {
+                            Configs.SECOND_SET_SHOOT = commonElements;
+                            System.out.println("Elementos em comum encontrados: " + commonElements);
+                        } else {
+                            System.out.println("Nenhum elemento em comum encontrado.");
+                        }
+
+                    }
+
+                    if (messageReceived.getDistanciaAproximada() == 1000 && shipModel.getShootLevel() == 1) {
+                        List<List<Integer>> isClose = new ArrayList<>();
+
+                        Configs.SECOND_SET_SHOOT.forEach(item -> {
+                            if (CalculadoraDeBatalha.calcularDistanciaEntrePontos(Math.toIntExact(messageReceived.getPosicao().getX()), Math.toIntExact(messageReceived.getPosicao().getY()), item.get(0), item.get(1)) <= 7) {
+                                isClose.add(item);
+                            }
+                        });
+                        Configs.SECOND_SET_SHOOT.removeIf(item -> isClose.contains(item));
+                    }
                     
                     if (messageReceived.isAcertou() && (shipModel.getShootLevel() == 1 || shipModel.getShootLevel() == 0)) {
                         shipModel.setShootLevel(2);

@@ -8,6 +8,9 @@ public class ShotLevelThird extends ShotState {
     public void handleShot(String correlationId) {
         // Lógica para lidar com o ataque no nível 3
          try{
+                if (Configs.THIRD_SET_SHOOT == null || Configs.THIRD_SET_SHOOT.isEmpty()) {
+                    shootRedPointAgain(correlationId);
+                }
                 HandleLog.title("Atack: Third level shoot: " + Configs.THIRD_SET_SHOOT.toString());
 
                 Long xAttackLong = Configs.THIRD_SET_SHOOT.get(0).get(0).longValue();

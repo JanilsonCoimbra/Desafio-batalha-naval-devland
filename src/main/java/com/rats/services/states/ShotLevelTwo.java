@@ -10,6 +10,9 @@ public class ShotLevelTwo extends ShotState {
     @Override
     public void handleShot(String correlationId) {
          try{
+                if (Configs.SECOND_SET_SHOOT == null || Configs.SECOND_SET_SHOOT.isEmpty()) {
+                    shootRedPointAgain(correlationId);
+                }
                 HandleLog.title("Atack: Second level shoot: " + Configs.SECOND_SET_SHOOT.toString());
 
                 Long xAttackLong = Configs.SECOND_SET_SHOOT.get(0).get(0).longValue();

@@ -77,7 +77,7 @@ public class CalculadoraDeBatalha {
 
     public static List<long[]> calculateThirdSetShoot( long x, long y) {
         List<long[]> wrappedPositions = new ArrayList<>();
-
+        boolean janilson = true;
         switch (Configs.enemyScore) {
             case 85, 75, 65:
                 wrappedPositions.add(new long[] {x - 2, y});
@@ -86,10 +86,23 @@ public class CalculadoraDeBatalha {
                 wrappedPositions.add(new long[] {x, y + 2});
                 break;
             case 55, 45, 35:
-                wrappedPositions.add(new long[] {x - 1, y});
-                wrappedPositions.add(new long[] {x, y - 1});
-                wrappedPositions.add(new long[] {x + 1, y});
-                wrappedPositions.add(new long[] {x, y + 1});
+                janilson = false;
+                if (Configs.POSITION_X_RED_SHOOT != null && Configs.POSITION_X_RED_SHOOT == x) {
+                    wrappedPositions.add(new long[] {x - 1, y});
+                    wrappedPositions.add(new long[] {x + 1, y});
+                    wrappedPositions.add(new long[] {x, y - 1});
+                    wrappedPositions.add(new long[] {x, y + 1});
+                } else if (Configs.POSITION_Y_RED_SHOOT != null && Configs.POSITION_Y_RED_SHOOT == y) {
+                    wrappedPositions.add(new long[] {x, y + 1});
+                    wrappedPositions.add(new long[] {x, y - 1});
+                    wrappedPositions.add(new long[] {x - 1, y});
+                    wrappedPositions.add(new long[] {x + 1, y});
+                } else {
+                    wrappedPositions.add(new long[] {x - 1, y});
+                    wrappedPositions.add(new long[] {x, y - 1});
+                    wrappedPositions.add(new long[] {x + 1, y});
+                    wrappedPositions.add(new long[] {x, y + 1});
+                }
                 break;
             default:
                 wrappedPositions.add(new long[] {x - 1, y});
@@ -103,7 +116,7 @@ public class CalculadoraDeBatalha {
                 break;
         }
 
-        if (Configs.POSITION_X_RED_SHOOT != null && Configs.POSITION_Y_RED_SHOOT != null) {
+        if (Configs.POSITION_X_RED_SHOOT != null && Configs.POSITION_Y_RED_SHOOT != null && janilson) {
             wrappedPositions.sort((a, b) -> {
                 int result = 0;
             
@@ -129,6 +142,10 @@ public class CalculadoraDeBatalha {
 
         return wrappedPositions;
     }
+
+    public static double calcularDistanciaEntrePontos(Integer x1, Integer y1, Integer x2, Integer y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    } 
 
     private CalculadoraDeBatalha() {
     }
