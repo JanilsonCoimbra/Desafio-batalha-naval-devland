@@ -2,7 +2,10 @@ package com.rats;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.rats.configs.ApplicationContextProvider;
 import com.rats.configs.HandleLog;
+import com.rats.services.NonBlockingKeyListenerService;
 import com.rats.services.ServiceBus;
 
 
@@ -11,10 +14,12 @@ public class RatosDoMarApplication {
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(RatosDoMarApplication.class, args);
+		ApplicationContextProvider.getApplicationContext();
 		HandleLog.title("Iniciando Ratos do Mar");
 
 		ServiceBus service = ServiceBus.getInstance();
 		service.receiveMessages();
+		new NonBlockingKeyListenerService();
 	}
 
 }

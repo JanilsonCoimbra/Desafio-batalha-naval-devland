@@ -12,24 +12,23 @@ public class Configs {
     public static final String TOPIC_NAME;
     public static final String SUBSCRIPTION_NAME;
     public static final List<List<Object>> SHIP_LIST_POSITION = new ArrayList<>();
-
     public static String POSITION_Y;
     public static String POSITION_X;
     public static String ORIENTATION;
     public static final String CRIPTOGRAFY_KEY_STRING;
-    public static final boolean ACTIVATE_LOG = true;
     
     public static Integer POSITION_X_RED_SHOOT;
     public static Integer POSITION_Y_RED_SHOOT;
 
     public static final List<List<Integer>> FIRST_SET_SHOOT = new ArrayList<>();
+    public static final List<List<Integer>> FIRST_SET_SHOOT_DIRECTED = new ArrayList<>();
+
     static {
         CONNECTION_STRING = appConfig.getConnectionString();
         TOPIC_NAME = appConfig.getTopicName();
         SUBSCRIPTION_NAME = appConfig.getSubscriptionName();
 
         CRIPTOGRAFY_KEY_STRING = "crta55898a4r4136fbge2ef6315a1268";
-
         SHIP_LIST_POSITION.add(List.of(15, 1, ShipOrientation.HORIZONTAL.getOrientation()));
         SHIP_LIST_POSITION.add(List.of(15, 16, ShipOrientation.HORIZONTAL.getOrientation()));
         SHIP_LIST_POSITION.add(List.of(15, 30, ShipOrientation.HORIZONTAL.getOrientation()));

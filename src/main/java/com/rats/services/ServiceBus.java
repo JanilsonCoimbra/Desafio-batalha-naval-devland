@@ -1,5 +1,4 @@
 package com.rats.services;
-
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusException;
@@ -25,6 +24,9 @@ import com.rats.validations.JsonValidate;
 public class ServiceBus {
 	static AppConfig appConfig = ApplicationContextProvider.getApplicationContext().getBean(AppConfig.class);
 	static ServiceBus serviceBus;
+
+
+	// static AppConfig appConfig = new AppConfig();
 	static ServiceBusClientBuilder serviceBuilder;
 	static ServiceBusProcessorClient processorClient;
 	static String connectionString;
@@ -41,54 +43,73 @@ public class ServiceBus {
 	
 	}
 
-	public static ServiceBus getInstance() {
-		if(serviceBus == null) {
-			serviceBus = new ServiceBus();
-			serviceBuilder = new ServiceBusClientBuilder();
-		}	
+    public static ServiceBus getInstance() {
+		if (serviceBus == null) {
+			try {
+				serviceBus = new ServiceBus();
+				serviceBuilder = new ServiceBusClientBuilder();
+				System.out.println("ServiceBusClientBuilder inicializado com sucesso.");
+			} catch (Exception e) {
+				System.err.println("Erro ao inicializar ServiceBusClientBuilder: " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
 		return serviceBus;
 	}
-	
-	public void sendMessage(ServiceBusMessage message)
-	{
-		try {
-			if(serviceBuilder == null) {
-				serviceBuilder = new ServiceBusClientBuilder();
-			}
 
-			ServiceBusSenderClient senderClient = serviceBuilder
-	            .connectionString(connectionString)
-	            .sender()
-	            .topicName(topicName)
-	            .buildClient();
-		
-	    senderClient.sendMessage(message);
+    public void sendMessage(ServiceBusMessage message) {
+        try {
+            if (serviceBuilder == null) {
+                serviceBuilder = new ServiceBusClientBuilder();
+            }
 
-		} catch (Exception e) {
-			System.out.println("Error sending message: " + e.getMessage());
-		} finally {
-			if(serviceBuilder != null) {
-				serviceBuilder = null;
+            System.out.println("Enviando mensagem para o tópico: " + topicName);
+            ServiceBusSenderClient senderClient = serviceBuilder
+                .connectionString(connectionString)
+                .sender()
+                .topicName(topicName)
+                .buildClient();
+
+            senderClient.sendMessage(message);
+            System.out.println("Mensagem enviada com sucesso.");
+
+        } catch (Exception e) {
+            System.err.println("Erro ao enviar mensagem: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (serviceBuilder != null) {
+                serviceBuilder = null;
+            }
+        }
+    }
+
+    public void receiveMessages() throws InterruptedException {
+		System.out.println("Iniciando ServiceBus com as seguintes configurações:");
+        System.out.println("Connection String: " + connectionString);
+        System.out.println("Topic Name: " + topicName);
+        System.out.println("Subscription Name: " + subscriptionName);
+        try {
+            if (processorClient == null) {
+                System.out.println("Iniciando o processamento de mensagens...");
+                processorClient = serviceBuilder
+                    .connectionString(connectionString)
+                    .processor()
+                    .topicName(topicName)
+                    .subscriptionName(subscriptionName)
+                    .maxConcurrentCalls(1)
+                    .processMessage(ServiceBus::processMessage)
+                    .processError(context -> processError(context))
+                    .buildProcessorClient();
+                processorClient.start();
+                System.out.println("Processador de mensagens iniciado com sucesso.");
+            } else {
+				System.out.println("Processador de mensagens já está em execução.");
 			}
-		}
-	
-	}
-		
-	public void receiveMessages() throws InterruptedException
-	{
-		if(processorClient == null) {
-			processorClient = serviceBuilder
-				.connectionString(connectionString)
-				.processor()
-				.topicName(topicName)
-				.subscriptionName(subscriptionName)
-				.maxConcurrentCalls(1)
-				.processMessage(ServiceBus::processMessage)
-				.processError(context -> processError(context))
-				.buildProcessorClient();
-			processorClient.start();
-		}
-	}
+        } catch (Exception e) {
+            System.err.println("Erro ao iniciar o processamento de mensagens: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 	
 	private static void processMessage(ServiceBusReceivedMessageContext context) {
 	    ServiceBusReceivedMessage message = context.getMessage();

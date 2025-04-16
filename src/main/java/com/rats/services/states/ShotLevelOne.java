@@ -23,7 +23,18 @@ public class ShotLevelOne extends ShotState {
                     return;
                 }
 
-                if (Configs.FIRST_SET_SHOOT != null && !Configs.FIRST_SET_SHOOT.isEmpty()) {
+                if(Configs.FIRST_SET_SHOOT_DIRECTED != null && !Configs.FIRST_SET_SHOOT_DIRECTED.isEmpty()) {
+                    if (Configs.FIRST_SET_SHOOT_DIRECTED.size() < 2 || Configs.FIRST_SET_SHOOT_DIRECTED.get(0) == null || Configs.FIRST_SET_SHOOT_DIRECTED.get(1) == null) {
+                        shotRandon(correlationId);
+                    }
+                    xAtack = Configs.FIRST_SET_SHOOT_DIRECTED.get(0).get(0);
+                    yAtack = Configs.FIRST_SET_SHOOT_DIRECTED.get(0).get(1);
+                    Configs.FIRST_SET_SHOOT_DIRECTED.remove(0);
+                    sendMessageShot(xAtack, yAtack, correlationId);
+                    HandleLog.title("First level shot directed executed: " + xAtack + ", " + yAtack);
+                }
+
+                if (Configs.FIRST_SET_SHOOT != null && !Configs.FIRST_SET_SHOOT.isEmpty() && Configs.FIRST_SET_SHOOT_DIRECTED == null || Configs.FIRST_SET_SHOOT_DIRECTED.isEmpty()) {
                     Integer size = Configs.FIRST_SET_SHOOT.size();
                     int randomIndex = (int) (Math.random() * size);
 
