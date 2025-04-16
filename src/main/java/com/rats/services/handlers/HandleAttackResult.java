@@ -78,53 +78,7 @@ public class HandleAttackResult implements IHandleChain {
                         System.out.println("Acertou a posição e o nível de tiro é 1 ou 0: ");
                         HandleLog.title("Acertou: " + messageReceived.isAcertou());
                         
-                        List<long[]> wrappedPositions = new ArrayList<>();
-
-                        long x = messageReceived.getPosicao().getX();
-                        long y = messageReceived.getPosicao().getY();
-
-                        switch (Configs.enemyScore) {
-                            case 85:
-                                wrappedPositions.add(new long[] {x - 2, y});
-                                wrappedPositions.add(new long[] {x, y - 2});
-                                wrappedPositions.add(new long[] {x + 2, y});
-                                wrappedPositions.add(new long[] {x, y + 2});
-                                break;
-                            default:
-                                wrappedPositions.add(new long[] {x - 1, y});
-                                wrappedPositions.add(new long[] {x, y - 1});
-                                wrappedPositions.add(new long[] {x + 1, y});
-                                wrappedPositions.add(new long[] {x, y + 1});
-                                wrappedPositions.add(new long[] {x - 2, y});
-                                wrappedPositions.add(new long[] {x, y - 2});
-                                wrappedPositions.add(new long[] {x + 2, y});
-                                wrappedPositions.add(new long[] {x, y + 2});
-                                break;
-                        }
-
-                        wrappedPositions.sort((a, b) -> {
-                            int result = 0;
-                        
-                            // Comparação para eixo X
-                            if (Configs.POSITION_X_RED_SHOOT > x) {
-                                if (a[0] < x && b[0] >= x) return -1;
-                                if (a[0] >= x && b[0] < x) return 1;
-                            } else if (Configs.POSITION_X_RED_SHOOT < x) {
-                                if (a[0] > x && b[0] <= x) return -1;
-                                if (a[0] <= x && b[0] > x) return 1;
-                            }
-                        
-                            // Comparação para eixo Y
-                            if (Configs.POSITION_Y_RED_SHOOT > y) {
-                                if (a[1] < y && b[1] >= y) return -1;
-                                if (a[1] >= y && b[1] < y) return 1;
-                            } else if (Configs.POSITION_Y_RED_SHOOT < y) {
-                                if (a[1] > y && b[1] <= y) return -1;
-                                if (a[1] <= y && b[1] > y) return 1;
-                            }
-                        
-                            return result;
-                        });
+                        List<long[]> wrappedPositions = CalculadoraDeBatalha.calculateThirdSetShoot(messageReceived.getPosicao().getX(), messageReceived.getPosicao().getY());
                         
                         Configs.THIRD_SET_SHOOT = new ArrayList<>();
                         wrappedPositions.forEach(item -> {

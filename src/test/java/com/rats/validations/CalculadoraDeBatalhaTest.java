@@ -2,6 +2,7 @@ package com.rats.validations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -81,6 +82,13 @@ class CalculadoraDeBatalhaTest {
         assertTrue(Configs.SHIP_LIST_POSITION.size() < positionCentralX);
     } 
 
+    @Test
+    void calculateThirdSetShoot() {
+        Configs.enemyScore = 85;
+        Configs.POSITION_X_RED_SHOOT = 13;
+        Configs.POSITION_Y_RED_SHOOT = 20;
 
-    
+        List<long[]> result = CalculadoraDeBatalha.calculateThirdSetShoot(13, 23);
+        assertEquals(4, result.size());
+    }
 }

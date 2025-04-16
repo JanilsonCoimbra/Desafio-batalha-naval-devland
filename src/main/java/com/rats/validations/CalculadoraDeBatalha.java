@@ -75,6 +75,53 @@ public class CalculadoraDeBatalha {
         return list;  
     }
 
+    public static List<long[]> calculateThirdSetShoot( long x, long y) {
+        List<long[]> wrappedPositions = new ArrayList<>();
+
+        switch (Configs.enemyScore) {
+            case 85:
+                wrappedPositions.add(new long[] {x - 2, y});
+                wrappedPositions.add(new long[] {x, y - 2});
+                wrappedPositions.add(new long[] {x + 2, y});
+                wrappedPositions.add(new long[] {x, y + 2});
+                break;
+            default:
+                wrappedPositions.add(new long[] {x - 1, y});
+                wrappedPositions.add(new long[] {x, y - 1});
+                wrappedPositions.add(new long[] {x + 1, y});
+                wrappedPositions.add(new long[] {x, y + 1});
+                wrappedPositions.add(new long[] {x - 2, y});
+                wrappedPositions.add(new long[] {x, y - 2});
+                wrappedPositions.add(new long[] {x + 2, y});
+                wrappedPositions.add(new long[] {x, y + 2});
+                break;
+        }
+
+        wrappedPositions.sort((a, b) -> {
+            int result = 0;
+        
+            if (Configs.POSITION_X_RED_SHOOT > x) {
+                if (a[0] < b[0]) return -1;
+                if (a[0] > b[0]) return 1;
+            } else if (Configs.POSITION_X_RED_SHOOT < x) {
+                if (a[0] > b[0]) return -1;
+                if (a[0] < b[0]) return 1;
+            }
+        
+            if (Configs.POSITION_Y_RED_SHOOT > y) {
+                if (a[1] < b[1]) return -1;
+                if (a[1] > b[1]) return 1;
+            } else if (Configs.POSITION_Y_RED_SHOOT < y) {
+                if (a[1] > b[1]) return -1;
+                if (a[1] < b[1]) return 1;
+            }
+        
+            return result;
+        });
+
+        return wrappedPositions;
+    }
+
     private CalculadoraDeBatalha() {
     }
 }
