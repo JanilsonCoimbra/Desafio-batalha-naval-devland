@@ -7,9 +7,10 @@ import java.util.List;
 import com.rats.interfaces.ShipOrientation;
 
 public class Configs {
-    public static final String CONNECTION_STRING = "Endpoint=sb://servdevland.servicebus.windows.net/;SharedAccessKeyName=casaratolandia;SharedAccessKey=MUt2vhyqM/TwWxhad+DzI2L1wjyifG3wP+ASbPh+dYc=";
-    public static final String TOPIC_NAME = "desafio.batalha_naval.casaratolandia";
-    public static final String SUBSCRIPTION_NAME = "rato_do_mar";
+    private static AppConfig appConfig = ApplicationContextProvider.getApplicationContext().getBean(AppConfig.class);
+    public static final String CONNECTION_STRING;
+    public static final String TOPIC_NAME;
+    public static final String SUBSCRIPTION_NAME;
     public static final List<List<Object>> SHIP_LIST_POSITION = new ArrayList<>();
 
     public static String POSITION_Y;
@@ -23,6 +24,10 @@ public class Configs {
 
     public static final List<List<Integer>> FIRST_SET_SHOOT = new ArrayList<>();
     static {
+        CONNECTION_STRING = appConfig.getConnectionString();
+        TOPIC_NAME = appConfig.getTopicName();
+        SUBSCRIPTION_NAME = appConfig.getSubscriptionName();
+
         CRIPTOGRAFY_KEY_STRING = "crta55898a4r4136fbge2ef6315a1268";
 
         SHIP_LIST_POSITION.add(List.of(15, 1, ShipOrientation.HORIZONTAL.getOrientation()));

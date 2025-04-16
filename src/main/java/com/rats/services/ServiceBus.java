@@ -10,7 +10,8 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rats.configs.Configs;
+import com.rats.configs.AppConfig;
+import com.rats.configs.ApplicationContextProvider;
 import com.rats.configs.HandleLog;
 import com.rats.interfaces.IHandleChain;
 import com.rats.models.Message;
@@ -22,14 +23,19 @@ import com.rats.services.handlers.HandleRegisterCampo;
 import com.rats.services.handlers.HandleScreen;
 import com.rats.validations.JsonValidate;
 public class ServiceBus {
-
+	static AppConfig appConfig = ApplicationContextProvider.getApplicationContext().getBean(AppConfig.class);
 	static ServiceBus serviceBus;
 	static ServiceBusClientBuilder serviceBuilder;
 	static ServiceBusProcessorClient processorClient;
-	static String connectionString = Configs.CONNECTION_STRING;
-	static String topicName = Configs.TOPIC_NAME;
-	static String subscriptionName = Configs.SUBSCRIPTION_NAME;
+	static String connectionString;
+	static String topicName;
+	static String subscriptionName;
 
+	static {
+		connectionString = appConfig.getConnectionString();
+		topicName = appConfig.getTopicName();
+		subscriptionName = appConfig.getSubscriptionName();
+	}
 
 	private ServiceBus() {
 	
