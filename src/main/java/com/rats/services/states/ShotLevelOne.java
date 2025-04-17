@@ -13,7 +13,8 @@ public class ShotLevelOne extends ShotState {
 
                 if (Configs.FIRST_SET_SHOOT_FIVE != null && !Configs.FIRST_SET_SHOOT_FIVE.isEmpty()) {
                     if (Configs.FIRST_SET_SHOOT_FIVE.size() < 2 || Configs.FIRST_SET_SHOOT_FIVE.get(0) == null || Configs.FIRST_SET_SHOOT_FIVE.get(1) == null) {
-                    shotRandon(correlationId);
+                        shotRandon(correlationId);
+                        return;
                     }
                     xAtack = Configs.FIRST_SET_SHOOT_FIVE.get(0);
                     yAtack = Configs.FIRST_SET_SHOOT_FIVE.get(1);
@@ -30,9 +31,11 @@ public class ShotLevelOne extends ShotState {
 
                     if (Configs.FIRST_SET_SHOOT_DIRECIONAL.get(randomIndex).size() < 2 || Configs.FIRST_SET_SHOOT_DIRECIONAL.get(randomIndex).get(0) == null || Configs.FIRST_SET_SHOOT_DIRECIONAL.get(randomIndex).get(1) == null) {
                         shotRandon(correlationId);
+                        return;
                     }
                     xAtack = Configs.FIRST_SET_SHOOT_DIRECIONAL.get(randomIndex).get(0);
                     yAtack = Configs.FIRST_SET_SHOOT_DIRECIONAL.get(randomIndex).get(1);
+                    Configs.FIRST_SET_SHOOT.removeIf(list -> list.equals(Configs.FIRST_SET_SHOOT_DIRECIONAL.get(randomIndex)));
                     Configs.FIRST_SET_SHOOT_DIRECIONAL.remove(randomIndex);
                     sendMessageShot(xAtack, yAtack, correlationId);
                     HandleLog.title("First level shot executed: " + xAtack + ", " + yAtack);
@@ -42,6 +45,7 @@ public class ShotLevelOne extends ShotState {
 
                     if (Configs.FIRST_SET_SHOOT.get(randomIndex).size() < 2 || Configs.FIRST_SET_SHOOT.get(randomIndex).get(0) == null || Configs.FIRST_SET_SHOOT.get(randomIndex).get(1) == null) {
                         shotRandon(correlationId);
+                        return;
                     }
                     xAtack = Configs.FIRST_SET_SHOOT.get(randomIndex).get(0);
                     yAtack = Configs.FIRST_SET_SHOOT.get(randomIndex).get(1);
@@ -52,6 +56,7 @@ public class ShotLevelOne extends ShotState {
                     shotRandon(correlationId);
                 }
             } catch (Exception e) {
+                shotRandon(correlationId);
                 HandleLog.title("First level shoot: " + e.getMessage());
                 throw new FirstLevelShootException("Error in first level shoot", e);
             }

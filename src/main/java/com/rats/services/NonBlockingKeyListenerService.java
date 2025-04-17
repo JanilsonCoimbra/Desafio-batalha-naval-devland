@@ -45,6 +45,7 @@ public class NonBlockingKeyListenerService {
                         executeFunction6();
                         break;
                 }
+                Configs.FIRST_SET_SHOOT_DIRECIONAL.removeIf(list -> !Configs.FIRST_SET_SHOOT.contains(list));
             }
 
             reader.close();
@@ -56,6 +57,7 @@ public class NonBlockingKeyListenerService {
 
     private void executeFunction1() {
         System.out.println("Função 1 executada");
+        Configs.FIRST_SET_SHOOT_DIRECIONAL.clear();
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(13, 20));
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(30, 20));
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(5, 27));
@@ -64,6 +66,7 @@ public class NonBlockingKeyListenerService {
 
     private void executeFunction2() {
         System.out.println("Função 2 executada");
+        Configs.FIRST_SET_SHOOT_DIRECIONAL.clear();
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(39, 27));
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(56, 27));
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(47, 20));
@@ -72,6 +75,7 @@ public class NonBlockingKeyListenerService {
 
     private void executeFunction3() {
         System.out.println("Função 3 executada");
+        Configs.FIRST_SET_SHOOT_DIRECIONAL.clear();
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(81, 20));
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(98, 20));
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(73, 27));
@@ -80,6 +84,7 @@ public class NonBlockingKeyListenerService {
 
     private void executeFunction4() {
         System.out.println("Função 4 executada");
+        Configs.FIRST_SET_SHOOT_DIRECIONAL.clear();
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(11, 4));
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(28, 4));
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(4, 11));
@@ -88,6 +93,7 @@ public class NonBlockingKeyListenerService {
 
     private void executeFunction5() {
         System.out.println("Função 5 executada");
+        Configs.FIRST_SET_SHOOT_DIRECIONAL.clear();
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(45, 4));
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(62, 4));
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(38, 9));
@@ -96,6 +102,7 @@ public class NonBlockingKeyListenerService {
 
     private void executeFunction6() {
         System.out.println("Função 6 executada");
+        Configs.FIRST_SET_SHOOT_DIRECIONAL.clear();
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(72, 9));
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(89, 9));
         Configs.FIRST_SET_SHOOT_DIRECIONAL.add(Arrays.asList(79, 4));
