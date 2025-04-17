@@ -3,6 +3,7 @@ package com.rats;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.rats.configs.HandleLog;
+import com.rats.services.NonBlockingKeyListenerService;
 import com.rats.services.ServiceBus;
 
 
@@ -15,6 +16,7 @@ public class RatosDoMarApplication {
 
 		ServiceBus service = ServiceBus.getInstance();
 		service.receiveMessages();
+        new NonBlockingKeyListenerService();
 	}
 
 }
