@@ -56,26 +56,26 @@ public class NonBlockingKeyListenerService {
 
     private void executeFunction1() {
         System.out.println("Função 1 executada");
-         Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(11, 4));
-         Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(28, 4));
-         Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(4, 11));
-         Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(21, 9));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(11, 4));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(28, 4));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(4, 11));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(21, 9));
     }
 
     private void executeFunction2() {
         System.out.println("Função 2 executada");
-        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(45, 4));
-        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(62, 4));
-        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(38, 9));
-        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(55, 9));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(39, 27));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(56, 27));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(47, 20));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(64, 20));
     }
 
     private void executeFunction3() {
         System.out.println("Função 3 executada");
-        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(72, 9));
-        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(89, 9));
-        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(79, 4));
-        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(96, 4));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(81, 20));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(98, 20));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(73, 27));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(90, 27));
     }
 
     private void executeFunction4() {
@@ -88,17 +88,17 @@ public class NonBlockingKeyListenerService {
 
     private void executeFunction5() {
         System.out.println("Função 5 executada");
-        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(39, 27));
-        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(56, 27));
-        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(47, 20));
-        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(64, 20));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(45, 4));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(62, 4));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(38, 9));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(55, 9));
     }
 
     private void executeFunction6() {
         System.out.println("Função 6 executada");
-        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(81, 20));
-        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(98, 20));
-        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(73, 27));
-        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(90, 27));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(72, 9));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(89, 9));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(79, 4));
+        Configs.FIRST_SET_SHOOT_DIRECTED.add(Arrays.asList(96, 4));
     }
 }
