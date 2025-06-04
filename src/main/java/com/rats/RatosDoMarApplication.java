@@ -8,12 +8,12 @@ import com.rats.services.ServiceBus;
 @SpringBootApplication
 public class RatosDoMarApplication {
 
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(RatosDoMarApplication.class, args);
-		HandleLog.title("Iniciando Ratos do Mar");
-
-		ServiceBus service = ServiceBus.getInstance();
-		service.receiveMessages();
-	}
-
+    
+    
+    public static void main(String[] args) throws InterruptedException {
+        SpringApplication.run(RatosDoMarApplication.class, args);
+        HandleLog.title("Iniciando Ratos do Mar");
+        ServiceBus serviceBus = new ServiceBus();
+        serviceBus.receiveMessages();
+    }
 }

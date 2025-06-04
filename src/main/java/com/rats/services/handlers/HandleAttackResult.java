@@ -2,8 +2,6 @@ package com.rats.services.handlers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rats.configs.Configs;
 import com.rats.configs.HandleLog;
