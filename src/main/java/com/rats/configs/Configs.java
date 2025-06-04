@@ -1,22 +1,45 @@
 package com.rats.configs;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 public class Configs {
-    public static final String CONNECTION_STRING = "Endpoint=sb://servdevland.servicebus.windows.net/;SharedAccessKeyName=casaratolandia;SharedAccessKey=MUt2vhyqM/TwWxhad+DzI2L1wjyifG3wP+ASbPh+dYc=";
-    public static final String TOPIC_NAME = "desafio.batalha_naval.casaratolandia";
-    public static final String SUBSCRIPTION_NAME = "rato_do_mar";
+    private static final Configs INSTANCE = new Configs();
 
-    public static final String POSITION_Y = "20";
-    public static final String POSITION_X = "20";
-    public static final String ORIENTATION = "vertical";
-    public static final String CRIPTOGRAFY_KEY_STRING;
-    
-    public static final List<List<Integer>> FIRST_SET_SHOOT = new ArrayList<>();
+    public static Configs getInstance() {
+        return INSTANCE;
+    }
+
+    public String CONNECTION_STRING;
+    public String TOPIC_NAME;
+    public String SUBSCRIPTION_NAME;
+    public final String POSITION_Y = "20";
+    public final String POSITION_X = "20";
+    public final String ORIENTATION = "vertical";
+    public final String CRIPTOGRAFY_KEY_STRING = "";
+
+    public final static List<List<Integer>> FIRST_SET_SHOOT = new ArrayList<>();
+
     static {
-        CRIPTOGRAFY_KEY_STRING = "";
+        Properties props = new Properties();
+        try (InputStream input = Configs.class.getClassLoader().getResourceAsStream("application.properties")) {
+            if (input != null) {
+                props.load(input);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        System.out.println(
+            "Loading properties from application.properties file: " + props.getProperty("AZURE_SERVICE_BUS_CONNECTION_STRING") +
+            ", " + props.getProperty("TOPIC_NAME") + ", " + props.getProperty("SUBSCRIPTION_NAME")
+        );
+        INSTANCE.CONNECTION_STRING = props.getProperty("AZURE_SERVICE_BUS_CONNECTION_STRING");
+        INSTANCE.TOPIC_NAME = props.getProperty("TOPIC_NAME");
+        INSTANCE.SUBSCRIPTION_NAME = props.getProperty("SUBSCRIPTION_NAME");
         FIRST_SET_SHOOT.add(Arrays.asList(93, 23));
         FIRST_SET_SHOOT.add(Arrays.asList(82, 23));
         FIRST_SET_SHOOT.add(Arrays.asList(71, 23));
@@ -45,7 +68,4 @@ public class Configs {
         FIRST_SET_SHOOT.add(Arrays.asList(16, 1));
         FIRST_SET_SHOOT.add(Arrays.asList(5, 1));
     }
-
-
-    private Configs() {}
 }
