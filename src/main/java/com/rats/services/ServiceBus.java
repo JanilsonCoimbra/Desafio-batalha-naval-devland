@@ -1,5 +1,7 @@
 package com.rats.services;
 
+import org.springframework.stereotype.Service;
+
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusException;
@@ -12,114 +14,92 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rats.configs.Configs;
 import com.rats.configs.HandleLog;
-import com.rats.interfaces.IHandleChain;
 import com.rats.models.Message;
+import com.rats.models.ShipModel;
 import com.rats.services.handlers.HandleAttackEnemy;
 import com.rats.services.handlers.HandleAttackResult;
 import com.rats.services.handlers.HandleCryptography;
 import com.rats.services.handlers.HandleRegisterCampo;
 import com.rats.validations.JsonValidate;
+
+@Service
 public class ServiceBus {
 
-	static ServiceBus serviceBus;
-	static ServiceBusClientBuilder serviceBuilder;
-	static ServiceBusProcessorClient processorClient;
-	static String connectionString = Configs.CONNECTION_STRING;
-	static String topicName = Configs.TOPIC_NAME;
-	static String subscriptionName = Configs.SUBSCRIPTION_NAME;
 
+    private final ServiceBusClientBuilder serviceBuilder;
+    private ServiceBusProcessorClient processorClient;
+    private final String connectionString = Configs.getInstance().CONNECTION_STRING;
+    private final String topicName = Configs.getInstance().TOPIC_NAME;
+    private final String subscriptionName = Configs.getInstance().SUBSCRIPTION_NAME;
 
-	private ServiceBus() {
-	
-	}
+    public ServiceBus() {
+        this.serviceBuilder = new ServiceBusClientBuilder();
+    }
 
-	public static ServiceBus getInstance() {
-		if(serviceBus == null) {
-			serviceBus = new ServiceBus();
-			serviceBuilder = new ServiceBusClientBuilder();
-		}	
-		return serviceBus;
-	}
-	
-	public void sendMessage(ServiceBusMessage message)
-	{
-		try {
-			if(serviceBuilder == null) {
-				serviceBuilder = new ServiceBusClientBuilder();
-			}
+    public void sendMessage(ServiceBusMessage message) {
+        try (ServiceBusSenderClient senderClient = serviceBuilder
+                .connectionString(connectionString)
+                .sender()
+                .topicName(topicName)
+                .buildClient()) {
+            senderClient.sendMessage(message);
+        } catch (Exception e) {
+            System.out.println("Error sending message: " + e.getMessage());
+        }
+    }
 
-			ServiceBusSenderClient senderClient = serviceBuilder
-	            .connectionString(connectionString)
-	            .sender()
-	            .topicName(topicName)
-	            .buildClient();
-		
-	    senderClient.sendMessage(message);
+    public void receiveMessages() throws InterruptedException {
+        if (processorClient == null) {
+            processorClient = serviceBuilder
+                .connectionString(connectionString)
+                .processor()
+                .topicName(topicName)
+                .subscriptionName(subscriptionName)
+                .maxConcurrentCalls(1)
+                .processMessage(this::processMessage)
+                .processError(ServiceBus::processError)
+                .buildProcessorClient();
+            processorClient.start();
+        }
+    }
 
-		} catch (Exception e) {
-			System.out.println("Error sending message: " + e.getMessage());
-		} finally {
-			if(serviceBuilder != null) {
-				serviceBuilder = null;
-			}
-		}
-	
-	}
-		
-	public void receiveMessages() throws InterruptedException
-	{
-		if(processorClient == null) {
-			ServiceBusProcessorClient processorClient = serviceBuilder
-				.connectionString(connectionString)
-				.processor()
-				.topicName(topicName)
-				.subscriptionName(subscriptionName)
-				.maxConcurrentCalls(1)
-				.processMessage(ServiceBus::processMessage)
-				.processError(context -> processError(context))
-				.buildProcessorClient();
-			processorClient.start();
-		}
-	}
-	
-	private static void processMessage(ServiceBusReceivedMessageContext context) {
-	    ServiceBusReceivedMessage message = context.getMessage();
-		    try {
-				JsonValidate.isValidJson(message.getBody().toString());
-				
-				ObjectMapper objectMapper = new ObjectMapper();
-				objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
+    private void processMessage(ServiceBusReceivedMessageContext context) {
+        ServiceBusReceivedMessage message = context.getMessage();
+        try {
+            JsonValidate.isValidJson(message.getBody().toString());
 
-				Message messageReceived = objectMapper.readValue(message.getBody().toString(), Message.class);
-				
-				HandleLog.title("Message received: " + message.getBody());  
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
 
-				IHandleChain handler = new HandleCryptography();
-				handler.next(new HandleRegisterCampo())
-                        .next(new HandleAttackResult())
-						.next(new HandleAttackEnemy());
-				handler.validate(messageReceived);
+            Message messageReceived = objectMapper.readValue(message.getBody().toString(), Message.class);
 
-		    } catch (Exception e) {
-				HandleLog.title("Error deserializar message: " + message.getBody());
-				HandleLog.title("Error converting message to MessageReceived: " + e.getMessage());	
-		    }	
-			
-	}
-	
-	private static void processError(ServiceBusErrorContext context) {
-		if (context.getException() instanceof ServiceBusException exception) {
-			if (exception.getReason() == ServiceBusFailureReason.GENERAL_ERROR) {
-				System.out.println("General error occurred: " + exception.getMessage());
-			} else if (exception.getReason() == ServiceBusFailureReason.MESSAGE_LOCK_LOST) {
-				System.out.println("Message lock lost: " + exception.getMessage());
-			} else if (exception.getReason() == ServiceBusFailureReason.SERVICE_BUSY) {
-				System.out.println("Service is busy: " + exception.getMessage());
-			}
-		} else {
-			System.out.println("Error occurred: " + context.getException().getMessage());
-		}
-	}
+            HandleLog.title("Message received: " + message.getBody());
+            ShipModel shipModel = ShipModel.getShipModel();
+            // Use os handlers injetados
+            HandleCryptography handleCryptography = new HandleCryptography();
+            handleCryptography.next(new HandleRegisterCampo(this))
+                .next(new HandleAttackResult(shipModel))
+                .next(new HandleAttackEnemy(this, shipModel));
 
+            handleCryptography.validate(messageReceived);
 
+        } catch (Exception e) {
+            HandleLog.title("Error deserializar message: " + message.getBody());
+            HandleLog.title("Error converting message to MessageReceived: " + e.getMessage());
+        }
+    }
+
+    private static void processError(ServiceBusErrorContext context) {
+        if (context.getException() instanceof ServiceBusException exception) {
+            if (exception.getReason() == ServiceBusFailureReason.GENERAL_ERROR) {
+                System.out.println("General error occurred: " + exception.getMessage());
+            } else if (exception.getReason() == ServiceBusFailureReason.MESSAGE_LOCK_LOST) {
+                System.out.println("Message lock lost: " + exception.getMessage());
+            } else if (exception.getReason() == ServiceBusFailureReason.SERVICE_BUSY) {
+                System.out.println("Service is busy: " + exception.getMessage());
+            }
+        } else {
+            System.out.println("Error occurred: " + context.getException().getMessage());
+        }
+    }
 }
