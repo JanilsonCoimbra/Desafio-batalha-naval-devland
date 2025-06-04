@@ -18,9 +18,9 @@ public class HandleCryptography implements IHandleChain {
         @Override
         public ICommunication validate(ICommunication request) {
             
-                if(!Configs.CRIPTOGRAFY_KEY_STRING.isEmpty()) {
+                if(!Configs.getInstance().CRIPTOGRAFY_KEY_STRING.isEmpty()) {
                         HandleLog.title("Descriptografando mensagem.");
-                        String conteudoDecripted = Cryptography.decryptString(request.getConteudo().toString(), Configs.CRIPTOGRAFY_KEY_STRING);
+                        String conteudoDecripted = Cryptography.decryptString(request.getConteudo().toString(), Configs.getInstance().CRIPTOGRAFY_KEY_STRING);
                         request.setConteudo(conteudoDecripted);
                         return nextHandler.validate(request);
                 }

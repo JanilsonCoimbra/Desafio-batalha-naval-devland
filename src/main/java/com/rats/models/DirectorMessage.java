@@ -12,9 +12,9 @@ public class DirectorMessage {
         BuilderMessage builderMessage = new BuilderMessage();
         return builderMessage 
                 .setCorrelationId(correlationId)
-                .setOrigem(Configs.SUBSCRIPTION_NAME)
+                .setOrigem(Configs.getInstance().SUBSCRIPTION_NAME)
                 .setEvento(EventsEnum.RegistroNavio)
-                .setConteudo("{\"nomeNavio\":\""+Configs.SUBSCRIPTION_NAME+"\",\"posicaoCentral\":{\"x\":"+Configs.POSITION_X+",\"y\":"+Configs.POSITION_Y+"},\"orientacao\":\""+Configs.ORIENTATION+"\"}")
+                .setConteudo("{\"nomeNavio\":\""+Configs.getInstance().SUBSCRIPTION_NAME+"\",\"posicaoCentral\":{\"x\":"+Configs.getInstance().POSITION_X+",\"y\":"+Configs.getInstance().POSITION_Y+"},\"orientacao\":\""+Configs.getInstance().ORIENTATION+"\"}")
                 .build();
     }
 
@@ -23,9 +23,9 @@ public class DirectorMessage {
         BuilderMessage builderMessage = new BuilderMessage();
         return builderMessage 
                 .setCorrelationId(correlationId)
-                .setOrigem(Configs.SUBSCRIPTION_NAME)
+                .setOrigem(Configs.getInstance().SUBSCRIPTION_NAME)
                 .setEvento(EventsEnum.Ataque)
-                .setConteudo("{\"nomeNavio\":\""+Configs.SUBSCRIPTION_NAME+"\",\"posicaoAtaque\":{\"x\":"+positionX+",\"y\":"+positionY+"}}")
+                .setConteudo("{\"nomeNavio\":\""+Configs.getInstance().SUBSCRIPTION_NAME+"\",\"posicaoAtaque\":{\"x\":"+positionX+",\"y\":"+positionY+"}}")
                 .build();
     }
 
@@ -33,9 +33,9 @@ public class DirectorMessage {
         BuilderMessage builderMessage = new BuilderMessage();
         return builderMessage 
                 .setCorrelationId("fake")
-                .setOrigem(Configs.SUBSCRIPTION_NAME)
+                .setOrigem(Configs.getInstance().SUBSCRIPTION_NAME)
                 .setEvento(EventsEnum.Ataque)
-                .setConteudo("{\"nomeNavio\":\""+Configs.SUBSCRIPTION_NAME+"\",\"posicaoAtaque\":{\"x\":"+"-1"+",\"y\":"+"10"+"}}")
+                .setConteudo("{\"nomeNavio\":\""+Configs.getInstance().SUBSCRIPTION_NAME+"\",\"posicaoAtaque\":{\"x\":"+"-1"+",\"y\":"+"10"+"}}")
                 .build();
     }
 }

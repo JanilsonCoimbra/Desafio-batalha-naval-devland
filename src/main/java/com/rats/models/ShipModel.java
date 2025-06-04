@@ -20,10 +20,10 @@ public class ShipModel {
 
 
     private ShipModel() {
-        subscriptionName = Configs.SUBSCRIPTION_NAME;
-        positionY = Configs.POSITION_Y;
-        positionX = Configs.POSITION_X;
-        orientation = Configs.ORIENTATION;
+        subscriptionName = Configs.getInstance().SUBSCRIPTION_NAME;
+        positionY = Configs.getInstance().POSITION_Y;
+        positionX = Configs.getInstance().POSITION_X;
+        orientation = Configs.getInstance().ORIENTATION;
     }
 
     public static ShipModel getShipModel() {
