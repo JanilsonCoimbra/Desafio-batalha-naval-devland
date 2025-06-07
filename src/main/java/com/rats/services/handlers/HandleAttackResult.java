@@ -2,6 +2,7 @@ package com.rats.services.handlers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rats.configs.Configs;
 import com.rats.configs.HandleLog;
@@ -14,8 +15,11 @@ import com.rats.validations.CalculadoraDeBatalha;
 public class HandleAttackResult implements IHandleChain {
 
     private IHandleChain nextHandler;
-    ShipModel shipModel = ShipModel.getShipModel();
+    private ShipModel shipModel;
 
+    public HandleAttackResult(ShipModel shipModel) {
+        this.shipModel = shipModel;
+    }
 
         @Override
         public IHandleChain next(IHandleChain nextHandler) {
@@ -26,9 +30,9 @@ public class HandleAttackResult implements IHandleChain {
         @Override
         public ICommunication validate(ICommunication request) {
 
-            if (request.getEvento() == EventsEnum.ResultadoAtaqueEfetuado && request.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
-                HandleLog.title("Ataque recebido: ");  
-                
+            if (request.getEvento() == EventsEnum.ResultadoAtaqueEfetuado && request.getNavioDestino().equals(Configs.getInstance().SUBSCRIPTION_NAME)) {
+                HandleLog.title("Ataque recebido: ");
+
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
                 
