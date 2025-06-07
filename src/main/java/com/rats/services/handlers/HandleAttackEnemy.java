@@ -1,5 +1,4 @@
 package com.rats.services.handlers;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,10 +15,16 @@ import com.rats.models.ShipModel;
 import com.rats.services.ServiceBus;
 
 public class HandleAttackEnemy implements IHandleChain {
+    private final ServiceBus serviceBus;
+    private final ShipModel shipModel;
 
+    public HandleAttackEnemy(ServiceBus serviceBus, ShipModel shipModel) {
+        this.serviceBus = serviceBus;
+        this.shipModel = shipModel;
+    }
 
     private IHandleChain nextHandler;
-    ShipModel shipModel = ShipModel.getShipModel();
+
     
         @Override
         public IHandleChain next(IHandleChain nextHandler) {
@@ -32,18 +37,14 @@ public class HandleAttackEnemy implements IHandleChain {
 
 
             try{
-                if (request.getEvento() == EventsEnum.LiberacaoAtaque && request.getNavioDestino().equals(Configs.SUBSCRIPTION_NAME)) {
-                    HandleLog.title("Atack: Processing message");  
-    
+                if (request.getEvento() == EventsEnum.LiberacaoAtaque && request.getNavioDestino().equals(Configs.getInstance().SUBSCRIPTION_NAME)) {
+                    HandleLog.title("Atack: Processing message");
+
                     String correlationId = request.getCorrelationId();
                     String message = shoot(correlationId);
                     ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
     
-    
-                    // messageService.setCorrelationId(message.getCorrelationId());
-    
-                    ServiceBus service = ServiceBus.getInstance();
-                    service.sendMessage(messageService);
+                    serviceBus.sendMessage(messageService);
                 }
 
             } catch (Exception e) {
@@ -75,9 +76,9 @@ public class HandleAttackEnemy implements IHandleChain {
         }
 
         private List<Integer> firstLevelShoot() {
-            Integer xAtack = Configs.FIRST_SET_SHOOT.get(0).get(0);
-            Integer yAtack = Configs.FIRST_SET_SHOOT.get(0).get(1);
-            Configs.FIRST_SET_SHOOT.remove(0);
+            Integer xAtack = Configs.getInstance().FIRST_SET_SHOOT.get(0).get(0);
+            Integer yAtack = Configs.getInstance().FIRST_SET_SHOOT.get(0).get(1);
+            Configs.getInstance().FIRST_SET_SHOOT.remove(0);
             return Arrays.asList(xAtack, yAtack);
         }
 
@@ -89,80 +90,4 @@ public class HandleAttackEnemy implements IHandleChain {
             shipModel.getSecondSetShoot().remove(0);
             return Arrays.asList(xAtack, yAtack);
         }
-
-        private List<List<Integer>> setSecondLevelShoot() {
-            if (shipModel.getDistanceApproximate() == "1000.0") {
-                shipModel.setShootLevel(0);
-                return Arrays.asList(Arrays.asList(0, 0));
-            } else if (isPerpendicularCase()) {
-                shipModel.setShootLevel(1);
-                return Arrays.asList(Arrays.asList(0, 0));
-            } else if (shipModel.getDistanceApproximate() == "1000.0") {
-                shipModel.setShootLevel(2);
-                return Arrays.asList(Arrays.asList(0, 0));
-            }
-            return null;
-        }
-
-        private boolean isPerpendicularCase() {
-            if (shipModel.getDistanceApproximate() == "1" || 
-            shipModel.getDistanceApproximate() == "2" || 
-            shipModel.getDistanceApproximate() == "3" || 
-            shipModel.getDistanceApproximate() == "4" || 
-            shipModel.getDistanceApproximate() == "5" || 
-            shipModel.getDistanceApproximate() == "6" || 
-            shipModel.getDistanceApproximate() == "7") {
-                return true;
-            }
-            return false;
-        }
-
-        private boolean isDiagonalCase() {
-            if (shipModel.getDistanceApproximate().contains("1,4") || 
-            shipModel.getDistanceApproximate().contains("2,8") || 
-            shipModel.getDistanceApproximate().contains("4,2") || 
-            shipModel.getDistanceApproximate().contains("5,6")) {
-                return true;
-            }
-            return false;
-        }
-
-        private boolean isMediumCase() {
-            if (shipModel.getDistanceApproximate().contains("6,7") || 
-            shipModel.getDistanceApproximate().contains("6,3") || 
-            shipModel.getDistanceApproximate().contains("6,0") || 
-            shipModel.getDistanceApproximate().contains("6,4") || 
-            shipModel.getDistanceApproximate().contains("5,8") || 
-            shipModel.getDistanceApproximate().contains("5,3") || 
-            shipModel.getDistanceApproximate() == "5" || 
-            shipModel.getDistanceApproximate().contains("4,4") || 
-            shipModel.getDistanceApproximate().contains("4,1")) {
-                return true;
-            }
-            return false;
-        }
-
-        public static List<long[]> calcularPosicoesPossiveis(long x, long y, double raio) {
-            List<long[]> posicoes = new ArrayList<>();
-            long raioInt = Math.round(raio);
-            // Percorrer todas as posições dentro do raio
-            for (long i = -raioInt; i <= raio; i++) {
-                for (long j = -raioInt; j <= raio; j++) {
-                    long novoX = x + i;
-                    long novoY = y + j;
-                    
-                    double distanciaTeste = Math.round(Math.sqrt((double) (i * i + j * j)) * 100.0) / 100.0;
-                    double raioArredondado = Math.round(raio * 100.0) / 100.0;
-                    // Verificar se a posição está dentro dos limites da matriz
-                    if (novoX >= 0 && novoX < 30 && novoY >= 0 && novoY < 100) {
-                        // Verificar se a posição está dentro do raio
-                        if (distanciaTeste == raioArredondado) {
-                            posicoes.add(new long[]{novoX, novoY});
-                        }
-                    }
-                }
-            }
-
-            return posicoes;
-        }
-}
+    }
