@@ -7,55 +7,41 @@ import com.rats.interfaces.IHandleChain;
 import com.rats.models.DirectorMessage;
 import com.rats.models.Message;
 import com.rats.services.ServiceBus;
-
 public class HandleRegisterCampo implements IHandleChain {
-        // TODO: put SHOOT_LEVEL = 0
-        private IHandleChain nextHandler;
-    
-        @Override
-        public IHandleChain next(IHandleChain nextHandler) {
-            this.nextHandler = nextHandler;
-            return this.nextHandler;
-        }
-    
-        @Override
-        public ICommunication validate(ICommunication request) {
+    private IHandleChain nextHandler;
+    private final ServiceBus serviceBus;
 
-                try{
-                    if (request.getEvento() == EventsEnum.CampoLiberadoParaRegistro) {
-                        HandleLog.title("Campo de batalha encontrado "+request.getCorrelationId());  
-    
-                        Message message  = DirectorMessage.createRegisterMessage(request.getCorrelationId());
-                        
-                        ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
-    
-                        ServiceBus service = ServiceBus.getInstance();
-                        service.sendMessage(messageService);
-    
-                        return request;
-                    }
-    
-                    if(request.getEvento() == EventsEnum.RegistrarNovamente) {
-                        HandleLog.title("Novo Registro "+request.getCorrelationId());  
-    
-    
-                        Message message  = DirectorMessage.createRegisterMessage( request.getCorrelationId());
-                        
-                        ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
-    
-                        ServiceBus service = ServiceBus.getInstance();
-                        service.sendMessage(messageService);
-    
-                    }
-    
-                    if (nextHandler != null) {
-                        return nextHandler.validate(request);
-                    }
-                    
-                } catch (Exception e) {
-                    HandleLog.title("Error in HandleRegisterCampo: " + e.getMessage());
-                }
-            
-            return request;
+    public HandleRegisterCampo(ServiceBus serviceBus) {
+        this.serviceBus = serviceBus;
+    }
+
+    @Override
+    public IHandleChain next(IHandleChain nextHandler) {
+        this.nextHandler = nextHandler;
+        return this.nextHandler;
+    }
+
+    @Override
+    public ICommunication validate(ICommunication request) {
+        try {
+            if (request.getEvento() == EventsEnum.CampoLiberadoParaRegistro ||
+                request.getEvento() == EventsEnum.RegistrarNovamente) {
+                registrarCampo(request);
+                return request;
+            }
+            if (nextHandler != null) {
+                return nextHandler.validate(request);
+            }
+        } catch (Exception e) {
+            HandleLog.title("Error in HandleRegisterCampo: " + e.getMessage());
         }
+        return request;
+    }
+
+    private void registrarCampo(ICommunication request) {
+        HandleLog.title("Campo de batalha encontrado " + request.getCorrelationId());
+        Message message = DirectorMessage.createRegisterMessage(request.getCorrelationId());
+        ServiceBusMessage messageService = new ServiceBusMessage(message.toString());
+        serviceBus.sendMessage(messageService);
+    }
 }
